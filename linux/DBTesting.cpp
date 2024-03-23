@@ -42,6 +42,7 @@ class DBTesting
 
     */
 public:
+    enum class TestType { AVL, MAP };
     void test_empty_tree()
     {
         AVL avl;
@@ -222,40 +223,43 @@ public:
     // check for memory leaks probably do random insertion and deletion here and
     // check for memory leaks
 
-    void test_memory_leak_map()
+    void test_memory_leak(enum TestType type)
     {
-        TEST_CASE_PARAM(memory_leak_map_iterations, 100);
-        TEST_CASE_PARAM(memory_leak_map_iterations, 1000);
-        TEST_CASE_PARAM(memory_leak_map_iterations, 10000);
-        TEST_CASE_PARAM(memory_leak_map_iterations, 100000);
-        TEST_CASE_PARAM(memory_leak_map_iterations, 10000000);
-        TEST_CASE_PARAM(memory_leak_map_bulk, 100);
-        TEST_CASE_PARAM(memory_leak_map_bulk, 1000);
-        TEST_CASE_PARAM(memory_leak_map_bulk, 10000);
-        TEST_CASE_PARAM(memory_leak_map_bulk, 100000);
-        TEST_CASE_PARAM(memory_leak_map_bulk, 10000000);
-        TEST_CASE(memory_leak_map_random);
-        TEST_CASE(memory_leak_map_duplicate);
-        TEST_CASE(memory_leak_map_empty);
+        if (type == TestType::AVL)
+        {
+            TEST_CASE_PARAM(memory_leak_iterations, 100);
+            TEST_CASE_PARAM(memory_leak_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000);
+            TEST_CASE_PARAM(memory_leak_iterations, 100000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
+            TEST_CASE(memory_leak_avl_random);
+            TEST_CASE(memory_leak_avl_duplicate);
+            TEST_CASE(memory_leak_avl_empty);
+        }
+        else if(type == TestType::MAP)
+        {
+            TEST_CASE_PARAM(memory_leak_iterations, 100);
+            TEST_CASE_PARAM(memory_leak_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000);
+            TEST_CASE_PARAM(memory_leak_iterations, 100000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
+            TEST_CASE(memory_leak_avl_random);
+            TEST_CASE(memory_leak_avl_duplicate);
+            TEST_CASE(memory_leak_avl_empty);
+        }
         
     }
 
-    void test_memory_leak_avl()
-    {
-        TEST_CASE_PARAM(memory_leak_iterations, 100);
-        TEST_CASE_PARAM(memory_leak_iterations, 1000);
-        TEST_CASE_PARAM(memory_leak_iterations, 10000);
-        TEST_CASE_PARAM(memory_leak_iterations, 100000);
-        TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-        TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
-        TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
-        TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
-        TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
-        TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
-        TEST_CASE(memory_leak_avl_random);
-        TEST_CASE(memory_leak_avl_duplicate);
-        TEST_CASE(memory_leak_avl_empty);
-    }
     void memory_leak_iterations(int i){
         AVL avl;
         EmployeeInfo empl;
