@@ -48,6 +48,8 @@ class AVL {
     // Inorder traversal of the tree
     void inorder(node *t);
 
+    friend class DBTesting;
+
   public:
     // Constructor
     AVL();

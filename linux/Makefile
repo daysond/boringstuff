@@ -4,7 +4,7 @@ CFLAGS+=-Wall
 FILES=AVLTree.cpp
 FILES+=timer.cpp
 # FILES+=main.cpp
-FILES+=InsertionTest.cpp
+FILES+=Test.cpp
 
 avlTree: $(FILES)
 	$(CC) $(CFLAGS) $^ -o $@
