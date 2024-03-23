@@ -1,0 +1,23 @@
+INORDER (NUM=20, height=4): root node has sin:100000010
+
+ height:0 sin:100000000 employee number:14 salary:50140 age:53
+ height:1 sin:100000001 employee number:7 salary:50070 age:39
+ height:0 sin:100000002 employee number:13 salary:50130 age:51
+ height:2 sin:100000003 employee number:10 salary:50100 age:45
+ height:1 sin:100000004 employee number:0 salary:50000 age:25
+ height:0 sin:100000005 employee number:16 salary:50160 age:57
+ height:3 sin:100000006 employee number:8 salary:50080 age:41
+ height:0 sin:100000007 employee number:11 salary:50110 age:47
+ height:1 sin:100000008 employee number:19 salary:50190 age:63
+ height:0 sin:100000009 employee number:9 salary:50090 age:43
+ height:4 sin:100000010 employee number:1 salary:50010 age:27
+ height:0 sin:100000011 employee number:2 salary:50020 age:29
+ height:1 sin:100000012 employee number:15 salary:50150 age:55
+ height:0 sin:100000013 employee number:18 salary:50180 age:61
+ height:2 sin:100000014 employee number:4 salary:50040 age:33
+ height:0 sin:100000015 employee number:3 salary:50030 age:31
+ height:3 sin:100000016 employee number:5 salary:50050 age:35
+ height:0 sin:100000017 employee number:6 salary:50060 age:37
+ height:1 sin:100000018 employee number:17 salary:50170 age:59
+ height:0 sin:100000019 employee number:12 salary:50120 age:49
+
