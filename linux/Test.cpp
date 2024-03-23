@@ -1,8 +1,8 @@
 // #include "AVLTree.h" // Your AVL tree implementation
 
+#include "DBTesting.cpp"
 #include <fstream>
 #include <iostream>
-#include "DBTesting.cpp"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ int treeHeight = 0;
 int main() {
     // testInsert();
     DBTesting dbt;
-    dbt.test_left_insertion();
+    dbt.test_insertion();
 
     std::cout << "All tests passed.\n";
     return 0;
