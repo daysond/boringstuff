@@ -34,7 +34,7 @@ int treeHeight = 0;
 int main() {
     // testInsert();
     DBTesting dbt;
-    dbt.test_insertion();
+    dbt.test_remove_large_tree();
 
     std::cout << "All tests passed.\n";
     return 0;
