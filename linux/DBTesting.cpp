@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -34,6 +35,7 @@ class DBTesting {
 
     */
   public:
+    enum class TestType { AVL, MAP };
 
     void test_empty_tree() {
         AVL avl;
@@ -189,15 +191,150 @@ class DBTesting {
 
     // 3. Test for maximum size.
 
-    void test_max_size_map() {}
+    void test_max_size_map() { 
+        map<int, EmployeeInfo> m;
+        int MAX = 0;
+    
+        try
+        {
+            while(true)
+            {
+                EmployeeInfo empl;
+                empl.age = 0;
+                empl.salary = 0;
+                empl.emplNumber = 0;
+                empl.sin = rand();
+                m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
+                MAX++;
+            }
+        }
+        catch(const std::bad_alloc& e){
+            std::cerr << e.what() << '\n';
+            cerr<< "Maximum size reached!" << endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
 
-    void test_max_size_avl() {}
+        m.clear(); // delete all elements
+        cout << "Max size of map is: " << MAX << endl;  
+    }
+
+    void test_max_size_avl() {
+        int MAX = 0;
+        int stepSize = 1000;
+        bool flag = true;
+
+        while (flag) {
+            try
+            {   
+                AVL avl;
+                for(int i = 0; i < MAX; i++){
+                   EmployeeInfo empl;
+                    empl.age = 0;
+                    empl.salary = 0;
+                    empl.emplNumber = 0;
+                    empl.sin = rand();
+                    avl.insert(empl);
+                }
+                avl.makeEmpty(avl.GetRoot());
+                MAX += stepSize;
+            }
+            catch(const std::bad_alloc& e){
+                std::cerr << e.what() << '\n';
+                cerr<< "Maximum size reached!" << endl;
+                flag = false;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+                flag = false;
+            }
+            
+            cout << "Max size of AVL is: " << MAX - stepSize << endl;
+        }
+    }
+
+    void test_max_size(enum TestType type) {
+        if (type == TestType::AVL){
+            TEST_CASE(test_max_size_avl);
+        } else if (type == TestType::MAP){
+            TEST_CASE(test_max_size_map);
+        } 
+    }
 
     // 4. Test for load (have the tree repeatedly accessed).
 
-    void test_load_map() {}
+    void test_load_map() {
+        map<int, EmployeeInfo> m;
+        int NUM = 1000000;
+        int findStep = 100;
+        int removeStep = 500;
+        try
+        {
+            for(int i = 0; i < NUM; i++)
+            {
+                EmployeeInfo empl;
+                empl.age = 0;
+                empl.salary = 0;
+                empl.emplNumber = 0;
+                empl.sin = i;
+                m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
 
-    void test_load_avl() {}
+                // D: Find a random element in the map after every findStep insertions
+                if(i % findStep == 0) m.find(rand() % i+1);
+                
+                // D: Remove a random element in the map after every removeStep insertions
+                if(i % removeStep == 0) m.erase(rand() % i+1);       
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+
+        cout << "Map loaded with " << NUM << " elements" << endl;
+    }
+
+    void test_load_avl() {
+        AVL avl;
+        int NUM = 1000000;
+        int findStep = 100;
+        int removeStep = 500;
+        try
+        {
+            for(int i = 0; i < NUM; i++)
+            {
+                EmployeeInfo empl;
+                empl.age = 0;
+                empl.salary = 0;
+                empl.emplNumber = 0;
+                empl.sin = i;
+                avl.insert(empl);
+
+                // D: Find a random element in the tree after every findStep insertions
+                if(i % findStep == 0) avl.Find(avl.GetRoot(), rand() % i+1);
+
+                // D: Remove a random element in the tree after every removeStep insertions
+                if(i % removeStep == 0) avl.remove(rand() % i+1);
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+
+        cout << "AVL loaded with " << NUM << " elements" << endl;
+    }
+
+    void test_load(enum TestType type) {
+        if (type == TestType::AVL){
+            TEST_CASE(test_load_avl);
+        } else if (type == TestType::MAP){
+            TEST_CASE(test_load_map);
+        } 
+    }
 
     // 5. Test for memory leak.
 
