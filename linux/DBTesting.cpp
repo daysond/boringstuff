@@ -729,9 +729,9 @@ class DBTesting
     }
 
 public:
-    enum class TestType
+    enum TestType
     {
-        AVL,
+        AVLTREE,
         MAP
     };
 
@@ -760,9 +760,9 @@ public:
     }
 
     // 3. Test for maximum size.
-    void test_max_size(enum TestType type)
+    void test_max_size(TestType type)
     {
-        if (type == TestType::AVL)
+        if (type == TestType::AVLTREE)
         {
             TEST_CASE(test_max_size_avl);
         }
@@ -773,9 +773,9 @@ public:
     }
 
     // 4. Test for load (have the tree repeatedly accessed).
-    void test_load(enum TestType type)
+    void test_load(TestType type)
     {
-        if (type == TestType::AVL)
+        if (type == TestType::AVLTREE)
         {
             TEST_CASE(test_load_avl);
         }
@@ -791,9 +791,9 @@ public:
     // check for memory leaks probably do random insertion and deletion here and
     // check for memory leaks
 
-    void test_memory_leak(enum TestType type)
+    void test_memory_leak(TestType type)
     {
-        if (type == TestType::AVL)
+        if (type == TestType::AVLTREE)
         {
             TEST_CASE_PARAM(memory_leak_iterations, 100);
             TEST_CASE_PARAM(memory_leak_iterations, 1000);
@@ -828,9 +828,9 @@ public:
     }
 
     // 6. Test for speed of search (worst case).
-    void test_speed_search_map(enum TestType type)
+    void test_speed_search_map(TestType type)
     {
-        if (type == TestType::AVL)
+        if (type == TestType::AVLTREE)
         {
             ofstream file1("test_speed_avl_exist.csv");
             ofstream file2("test_speed_avl_not_exist.csv");
