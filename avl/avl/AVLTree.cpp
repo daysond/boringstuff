@@ -248,15 +248,6 @@ void AVL::display() {
     outfile << endl;
     outfile.close();
 }
-
-
-void AVL::display(char file[]) {
-    outfile.open(file);
-    inorder(root);
-    outfile << endl;
-    outfile.close();
-}
-
 node *AVL::GetRoot() { return root; }
 node *AVL::Find(node *node, int sin) {
     if (node == NULL) {
