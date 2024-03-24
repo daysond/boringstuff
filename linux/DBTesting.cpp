@@ -218,7 +218,7 @@ class DBTesting {
         }
 
         m.clear(); // delete all elements
-        cout << "Max size of map is: " << MAX << endl;  
+        cout << "@test_max_size: Max size of map is: " << MAX << endl;  
     }
 
     void test_max_size_avl() {
@@ -252,7 +252,7 @@ class DBTesting {
                 flag = false;
             }
             
-            cout << "Max size of AVL is: " << MAX - stepSize << endl;
+            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize << endl;
         }
     }
 
@@ -294,7 +294,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "Map loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): Map loaded with " << NUM << " elements" << endl;
     }
 
     void test_load_avl() {
@@ -325,7 +325,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "AVL loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): AVL loaded with " << NUM << " elements" << endl;
     }
 
     void test_load(enum TestType type) {
