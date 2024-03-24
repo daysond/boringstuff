@@ -35,7 +35,10 @@ int main() {
     // testInsert();
     
     DBTesting dbt;
+    // needs to be timed
+    dbt.test_load(dbt.TestType::AVLTREE);
     dbt.test_deletion();
+    
     std::cout << "All tests passed.\n";
     return 0;
 }
