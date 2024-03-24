@@ -1,0 +1,14 @@
+ height:0 sin:3 employee number:0 salary:0 age:0
+ height:2 sin:4 employee number:0 salary:0 age:0
+ height:0 sin:5 employee number:0 salary:0 age:0
+ height:1 sin:6 employee number:0 salary:0 age:0
+ height:0 sin:7 employee number:0 salary:0 age:0
+ height:3 sin:8 employee number:0 salary:0 age:0
+ height:0 sin:9 employee number:0 salary:0 age:0
+ height:1 sin:10 employee number:0 salary:0 age:0
+ height:0 sin:11 employee number:0 salary:0 age:0
+ height:2 sin:12 employee number:0 salary:0 age:0
+ height:0 sin:13 employee number:0 salary:0 age:0
+ height:1 sin:14 employee number:0 salary:0 age:0
+ height:0 sin:15 employee number:0 salary:0 age:0
+

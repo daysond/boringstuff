@@ -60,6 +60,7 @@ class AVL {
     // Display the tree
     void display();
     // Get the root node of the tree
+    void display(char file[]);
     node *GetRoot();
     // Find a node in the tree by SIN
     node *Find(node *node, int sin);
