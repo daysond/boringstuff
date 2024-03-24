@@ -1,4 +1,13 @@
-// AVLTree.cpp: AVL Tree Implementation in C++   */
+//
+//  AVLTree.hpp
+//  avl
+//
+//  Created by Dayson Dong on 2024-03-23.
+//
+
+#ifndef AVLTree_hpp
+#define AVLTree_hpp
+
 
 using namespace std;
 
@@ -60,10 +69,11 @@ class AVL {
     // Display the tree
     void display();
     // Get the root node of the tree
-    void display(char file[]);
     node *GetRoot();
     // Find a node in the tree by SIN
     node *Find(node *node, int sin);
     // Get the balance of a node
     int getBalance(node *t);
 };
+
+#endif /* AVLTree_hpp */
