@@ -1,59 +1,61 @@
 #include "AVLTree.h"
+#include "timer.h"
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <map>
-#include "timer.h"
 
 using namespace std;
 
+#define INT_MAX 2147483647
 
-#define TEST_CASE(fn)                                                                                   \
-    cout << "================================================================================" << endl; \
-    cout << "    Running " << #fn << "...";                                                             \
-    fn(param);                                                                                               \
-    cout << " Complete. " << endl;                                                                      \
-    cout << "================================================================================" << endl;
-#define TEST_CASE_PARAM(fn, param)                                                                      \
-    cout << "================================================================================" << endl; \
-    cout << "    Running " << #fn << "...";                                                             \
-    fn(param);                                                                                          \
-    cout << " Complete. " << endl;                                                                      \
-    cout << "================================================================================" << endl;
+#define TEST_CASE(fn)                                                          \
+    cout << "================================================================" \
+            "================"                                                 \
+         << endl;                                                              \
+    cout << "    Running " << #fn << "...";                                    \
+    fn();                                                                      \
+    cout << " Complete. " << endl;                                             \
+    cout << "================================================================" \
+            "================"                                                 \
+         << endl;
+
+#define TEST_CASE_PARAM(fn, param)                                             \
+    cout << "================================================================" \
+            "================"                                                 \
+         << endl;                                                              \
+    cout << "    Running " << #fn << "...";                                    \
+    fn(param);                                                                 \
+    cout << " Complete. " << endl;                                             \
+    cout << "================================================================" \
+            "================"                                                 \
+         << endl;
 
 class DBTesting {
 
     /*
     Avl Only
     1. Test for correctness of insertion.
-
-
     2. Test for correctness of deletion.
-
 
     Map & Avl
     3. Test for maximum size.
-
     4. Test for load (have the tree repeatedly accessed).
-
     5. Test for memory leak.
-
     6. Test for speed of search (worst case).
-
     */
 
-
     enum class TestType { AVL, MAP };
-    
-    void test_empty_tree()
-    {
+
+    void test_empty_tree() {
         AVL avl;
         assert(avl.GetRoot() == NULL);
     }
-    
-    void test_single_node()
-    {
+
+    // Test insertion
+
+    void test_single_node() {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
@@ -69,8 +71,7 @@ class DBTesting {
         assert(avl.Find(root, 1)->empl.sin == 1);
     }
 
-    void test_right_insertion()
-    {
+    void test_right_insertion() {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -78,8 +79,7 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = i;
             avl.insert(empl);
             // assert balance maintained
@@ -91,8 +91,7 @@ class DBTesting {
         }
     }
 
-    void test_left_insertion()
-    {
+    void test_left_insertion() {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -100,8 +99,7 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = iterations; i > 0; i--)
-        {
+        for (int i = iterations; i > 0; i--) {
             empl.sin = i;
             avl.insert(empl);
             // assert balance maintained
@@ -113,8 +111,7 @@ class DBTesting {
         }
     }
 
-    void test_double_roatation()
-    {
+    void test_double_roatation() {
         // Left-Right
         AVL avl;
         EmployeeInfo empl;
@@ -144,8 +141,7 @@ class DBTesting {
         assert(avl2.getBalance(root) == 0);
     }
 
-    void test_random_insertion()
-    {
+    void test_random_insertion() {
         AVL avl;
         srand(42);
         const int iterations = 1000;
@@ -154,8 +150,7 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = rand();
             avl.insert(empl);
             // assert balance maintained
@@ -165,8 +160,7 @@ class DBTesting {
         }
     }
 
-    void test_duplicate_insertion()
-    {
+    void test_duplicate_insertion() {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -174,8 +168,7 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = 1;
             avl.insert(empl);
             // assert balance maintained
@@ -187,8 +180,10 @@ class DBTesting {
         }
     }
 
-    // DELETION
-      AVL get_tree(int sin[], int n) {
+    // Test DELETION
+
+    // Helper function to create a tree with n nodes
+    AVL get_tree(int sin[], int n) {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
@@ -298,7 +293,7 @@ class DBTesting {
             root = avl.GetRoot();
             assert(avl.Find(root, sin[i]) == NULL);
             balance = avl.getBalance(root);
-    
+
             sprintf(file, "test_remove_in_sequence_%d.txt", i);
             avl.display(file);
             assert(balance == 0 || balance == 1 || balance == -1);
@@ -309,15 +304,13 @@ class DBTesting {
         }
     }
 
-    // MAX SIZE
-    void test_max_size_map() { 
+    // Test MAX SIZE
+    void test_max_size_map() {
         map<int, EmployeeInfo> m;
         int MAX = 0;
-    
-        try
-        {
-            while(true)
-            {
+
+        try {
+            while (true) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -326,18 +319,15 @@ class DBTesting {
                 m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
                 MAX++;
             }
-        }
-        catch(const std::bad_alloc& e){
+        } catch (const std::bad_alloc &e) {
             std::cerr << e.what() << '\n';
-            cerr<< "Maximum size reached!" << endl;
-        }
-        catch(const std::exception& e)
-        {
+            cerr << "Maximum size reached!" << endl;
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
         m.clear(); // delete all elements
-        cout << "@test_max_size: Max size of map is: " << MAX << endl;  
+        cout << "@test_max_size: Max size of map is: " << MAX << endl;
     }
 
     void test_max_size_avl() {
@@ -346,11 +336,10 @@ class DBTesting {
         bool flag = true;
 
         while (flag) {
-            try
-            {   
+            try {
                 AVL avl;
-                for(int i = 0; i < MAX; i++){
-                   EmployeeInfo empl;
+                for (int i = 0; i < MAX; i++) {
+                    EmployeeInfo empl;
                     empl.age = 0;
                     empl.salary = 0;
                     empl.emplNumber = 0;
@@ -359,32 +348,28 @@ class DBTesting {
                 }
                 avl.makeEmpty(avl.GetRoot());
                 MAX += stepSize;
-            }
-            catch(const std::bad_alloc& e){
+            } catch (const std::bad_alloc &e) {
                 std::cerr << e.what() << '\n';
-                cerr<< "Maximum size reached!" << endl;
+                cerr << "Maximum size reached!" << endl;
                 flag = false;
-            }
-            catch(const std::exception& e)
-            {
+            } catch (const std::exception &e) {
                 std::cerr << e.what() << '\n';
                 flag = false;
             }
-            
-            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize << endl;
+
+            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize
+                 << endl;
         }
     }
 
-    // LOAD
+    // Test LOAD
     void test_load_map() {
         map<int, EmployeeInfo> m;
         int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
-        try
-        {
-            for(int i = 0; i < NUM; i++)
-            {
+        try {
+            for (int i = 0; i < NUM; i++) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -392,15 +377,17 @@ class DBTesting {
                 empl.sin = i;
                 m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
 
-                // D: Find a random element in the map after every findStep insertions
-                if(i % findStep == 0) m.find(rand() % i+1);
-                
-                // D: Remove a random element in the map after every removeStep insertions
-                if(i % removeStep == 0) m.erase(rand() % i+1);       
+                // D: Find a random element in the map after every findStep
+                // insertions
+                if (i % findStep == 0)
+                    m.find(rand() % i + 1);
+
+                // D: Remove a random element in the map after every removeStep
+                // insertions
+                if (i % removeStep == 0)
+                    m.erase(rand() % i + 1);
             }
-        }
-        catch(const std::exception& e)
-        {
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
@@ -412,10 +399,8 @@ class DBTesting {
         int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
-        try
-        {
-            for(int i = 0; i < NUM; i++)
-            {
+        try {
+            for (int i = 0; i < NUM; i++) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -423,15 +408,17 @@ class DBTesting {
                 empl.sin = i;
                 avl.insert(empl);
 
-                // D: Find a random element in the tree after every findStep insertions
-                if(i % findStep == 0) avl.Find(avl.GetRoot(), rand() % i+1);
+                // D: Find a random element in the tree after every findStep
+                // insertions
+                if (i % findStep == 0)
+                    avl.Find(avl.GetRoot(), rand() % i + 1);
 
-                // D: Remove a random element in the tree after every removeStep insertions
-                if(i % removeStep == 0) avl.remove(rand() % i+1);
+                // D: Remove a random element in the tree after every removeStep
+                // insertions
+                if (i % removeStep == 0)
+                    avl.remove(rand() % i + 1);
             }
-        }
-        catch(const std::exception& e)
-        {
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
@@ -439,37 +426,33 @@ class DBTesting {
     }
 
     // MEMORY LEAK
-    void memory_leak_iterations(int i){
+    void memory_leak_iterations(int i) {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int i = 0; i < i; i++)
-        {
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             avl.insert(empl);
         }
         avl.makeEmpty(avl.GetRoot());
-
     }
 
-    void memory_leak_avl_bulk(int i){
+    void memory_leak_avl_bulk(int i) {
         AVL avl;
         EmployeeInfo empl;
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
-        empl.emplNumber =INT_MAX;
-        for (int i = 0; i < i; i++)
-        {
+        empl.emplNumber = INT_MAX;
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             avl.insert(empl);
         }
         avl.makeEmpty(avl.GetRoot());
-
     }
 
-    void memory_leak_avl_random(){
+    void memory_leak_avl_random() {
         AVL avl;
         srand(42);
         const int iterations = 10000;
@@ -478,15 +461,14 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = rand();
             avl.insert(empl);
         }
         avl.makeEmpty(avl.GetRoot());
     }
 
-    void memory_leak_avl_duplicate(){
+    void memory_leak_avl_duplicate() {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -494,16 +476,14 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = 1;
             avl.insert(empl);
         }
         avl.makeEmpty(avl.GetRoot());
-
     }
 
-    void memory_leak_avl_empty(){
+    void memory_leak_avl_empty() {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
@@ -511,49 +491,42 @@ class DBTesting {
         empl.emplNumber = 0;
         avl.insert(empl);
         avl.makeEmpty(avl.GetRoot());
-
     }
 
-    void memory_leak_map_iterations(int i){
-        map<int, EmployeeInfo*> map;
+    void memory_leak_map_iterations(int i) {
+        map<int, EmployeeInfo *> map;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int i = 0; i < i; i++)
-        {
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int i = 0; i < i; i++)
-        {
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             map.erase(i);
         }
-
     }
 
-    void memory_leak_map_bulk(int i){
-        map<int, EmployeeInfo*> map;
+    void memory_leak_map_bulk(int i) {
+        map<int, EmployeeInfo *> map;
         EmployeeInfo empl;
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
-        empl.emplNumber =INT_MAX;
-        for (int i = 0; i < i; i++)
-        {
+        empl.emplNumber = INT_MAX;
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int i = 0; i < i; i++)
-        {
+        for (int i = 0; i < i; i++) {
             empl.sin = i;
             map.erase(i);
         }
-
     }
 
-    void memory_leak_map_random(){
-        map<int, EmployeeInfo*> map;
+    void memory_leak_map_random() {
+        map<int, EmployeeInfo *> map;
         srand(42);
         const int iterations = 10000;
         EmployeeInfo empl;
@@ -561,192 +534,182 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = rand();
             map[i] = &empl;
         }
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = rand();
             map.erase(i);
         }
-
     }
 
-    void memory_leak_map_duplicate(){
-        map<int, EmployeeInfo*> map;
+    void memory_leak_map_duplicate() {
+        map<int, EmployeeInfo *> map;
         const int iterations = 100;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = 1;
             map[i] = &empl;
         }
-        for (int i = 0; i < iterations; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
             empl.sin = 1;
             map.erase(i);
         }
     }
 
-    void memory_leak_map_empty(){
-        map<int, EmployeeInfo*> map;
+    void memory_leak_map_empty() {
+        map<int, EmployeeInfo *> map;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
         map[0] = &empl;
         map.erase(0);
-
     }
-    
-    // SPEED SEARCH
-    map<int, EmployeeInfo *> populateMap(int n)
-    {
+
+    // Test SPEED SEARCH
+    map<int, EmployeeInfo *> populateMap(int n) {
         map<int, EmployeeInfo *> map;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             empl.sin = i;
             map[i] = &empl;
         }
     }
-    AVL populateAVL(int n)
-    {
+
+    AVL populateAVL(int n) {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             empl.sin = i;
             avl.insert(empl);
         }
         return avl;
     }
 
-    void test_speed_map_exist(int i)
-    {
+    void test_speed_map_exist(int i) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find(rand() * i);
         timer.stop();
         assert(it != map.end());
-        cout << "Time taken to search for non existent element in map of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for non existent element in map of size "
+             << i << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_map_not_exist(int i)
-    {
+    void test_speed_map_not_exist(int i) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find(-1);
         timer.stop();
         assert(it == map.end());
-        cout << "Time taken to search for non existent element in map of size 10000000 is " << timer.currtime() << endl;
+        cout << "Time taken to search for non existent element in map of size "
+                "10000000 is "
+             << timer.currtime() << endl;
     }
 
-    void test_speed_map_bottom(int i)
-    {
+    void test_speed_map_bottom(int i) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find(0);
         timer.stop();
         assert(it != map.end());
-        cout << "Time taken to search for bottom element in map of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for bottom element in map of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_map_top(int i)
-    {
+    void test_speed_map_top(int i) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find(i - 1);
         timer.stop();
         assert(it != map.end());
-        cout << "Time taken to search for top element in map of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for top element in map of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_map_middle(int i)
-    {
+    void test_speed_map_middle(int i) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find((i / 2) - 1);
         timer.stop();
         assert(it != map.end());
-        cout << "Time taken to search for middle element in map of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for middle element in map of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_avl_exist(int i)
-    {
+    void test_speed_avl_exist(int i) {
         AVL avl = populateAVL(i);
         Timer timer;
         timer.start();
         node *n = avl.Find(avl.GetRoot(), rand() * i);
         timer.stop();
         assert(n != NULL);
-        cout << "Time taken to search for non existent element in AVL of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for non existent element in AVL of size "
+             << i << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_avl_not_exist(int i)
-    {
+    void test_speed_avl_not_exist(int i) {
         AVL avl = populateAVL(i);
         Timer timer;
         timer.start();
         node *n = avl.Find(avl.GetRoot(), -1);
         timer.stop();
         assert(n == NULL);
-        cout << "Time taken to search for non existent element in AVL of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for non existent element in AVL of size "
+             << i << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_avl_bottom(int i)
-    {
+    void test_speed_avl_bottom(int i) {
         AVL avl = populateAVL(i);
         Timer timer;
         timer.start();
         node *n = avl.Find(avl.GetRoot(), 0);
         timer.stop();
         assert(n != NULL);
-        cout << "Time taken to search for bottom element in AVL of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for bottom element in AVL of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_avl_top(int i)
-    {
+    void test_speed_avl_top(int i) {
         AVL avl = populateAVL(i);
         Timer timer;
         timer.start();
         node *n = avl.Find(avl.GetRoot(), i - 1);
         timer.stop();
         assert(n != NULL);
-        cout << "Time taken to search for top element in AVL of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for top element in AVL of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-    void test_speed_avl_middle(int i)
-    {
+    void test_speed_avl_middle(int i) {
         AVL avl = populateAVL(i);
         Timer timer;
         timer.start();
         node *n = avl.Find(avl.GetRoot(), (i / 2) - 1);
         timer.stop();
         assert(n != NULL);
-        cout << "Time taken to search for middle element in AVL of size " << i << " is " << timer.currtime() << endl;
+        cout << "Time taken to search for middle element in AVL of size " << i
+             << " is " << timer.currtime() << endl;
     }
 
-public:
-    enum class TestType { AVL, MAP };
-
+  public:
     void test_insertion() {
         TEST_CASE(test_empty_tree);
         TEST_CASE(test_single_node);
@@ -771,14 +734,12 @@ public:
 
     // 3. Test for maximum size.
 
-    void test_max_size_map() { 
+    void test_max_size_map() {
         map<int, EmployeeInfo> m;
         int MAX = 0;
-    
-        try
-        {
-            while(true)
-            {
+
+        try {
+            while (true) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -787,18 +748,15 @@ public:
                 m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
                 MAX++;
             }
-        }
-        catch(const std::bad_alloc& e){
+        } catch (const std::bad_alloc &e) {
             std::cerr << e.what() << '\n';
-            cerr<< "Maximum size reached!" << endl;
-        }
-        catch(const std::exception& e)
-        {
+            cerr << "Maximum size reached!" << endl;
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
         m.clear(); // delete all elements
-        cout << "@test_max_size: Max size of map is: " << MAX << endl;  
+        cout << "@test_max_size: Max size of map is: " << MAX << endl;
     }
 
     void test_max_size_avl() {
@@ -807,11 +765,10 @@ public:
         bool flag = true;
 
         while (flag) {
-            try
-            {   
+            try {
                 AVL avl;
-                for(int i = 0; i < MAX; i++){
-                   EmployeeInfo empl;
+                for (int i = 0; i < MAX; i++) {
+                    EmployeeInfo empl;
                     empl.age = 0;
                     empl.salary = 0;
                     empl.emplNumber = 0;
@@ -820,28 +777,26 @@ public:
                 }
                 avl.makeEmpty(avl.GetRoot());
                 MAX += stepSize;
-            }
-            catch(const std::bad_alloc& e){
+            } catch (const std::bad_alloc &e) {
                 std::cerr << e.what() << '\n';
-                cerr<< "Maximum size reached!" << endl;
+                cerr << "Maximum size reached!" << endl;
                 flag = false;
-            }
-            catch(const std::exception& e)
-            {
+            } catch (const std::exception &e) {
                 std::cerr << e.what() << '\n';
                 flag = false;
             }
-            
-            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize << endl;
+
+            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize
+                 << endl;
         }
     }
 
     void test_max_size(enum TestType type) {
-        if (type == TestType::AVL){
+        if (type == TestType::AVL) {
             TEST_CASE(test_max_size_avl);
-        } else if (type == TestType::MAP){
+        } else if (type == TestType::MAP) {
             TEST_CASE(test_max_size_map);
-        } 
+        }
     }
 
     // 4. Test for load (have the tree repeatedly accessed).
@@ -851,10 +806,8 @@ public:
         int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
-        try
-        {
-            for(int i = 0; i < NUM; i++)
-            {
+        try {
+            for (int i = 0; i < NUM; i++) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -862,15 +815,17 @@ public:
                 empl.sin = i;
                 m.insert(pair<int, EmployeeInfo>(empl.sin, empl));
 
-                // D: Find a random element in the map after every findStep insertions
-                if(i % findStep == 0) m.find(rand() % i+1);
-                
-                // D: Remove a random element in the map after every removeStep insertions
-                if(i % removeStep == 0) m.erase(rand() % i+1);       
+                // D: Find a random element in the map after every findStep
+                // insertions
+                if (i % findStep == 0)
+                    m.find(rand() % i + 1);
+
+                // D: Remove a random element in the map after every removeStep
+                // insertions
+                if (i % removeStep == 0)
+                    m.erase(rand() % i + 1);
             }
-        }
-        catch(const std::exception& e)
-        {
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
@@ -882,10 +837,8 @@ public:
         int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
-        try
-        {
-            for(int i = 0; i < NUM; i++)
-            {
+        try {
+            for (int i = 0; i < NUM; i++) {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -893,15 +846,17 @@ public:
                 empl.sin = i;
                 avl.insert(empl);
 
-                // D: Find a random element in the tree after every findStep insertions
-                if(i % findStep == 0) avl.Find(avl.GetRoot(), rand() % i+1);
+                // D: Find a random element in the tree after every findStep
+                // insertions
+                if (i % findStep == 0)
+                    avl.Find(avl.GetRoot(), rand() % i + 1);
 
-                // D: Remove a random element in the tree after every removeStep insertions
-                if(i % removeStep == 0) avl.remove(rand() % i+1);
+                // D: Remove a random element in the tree after every removeStep
+                // insertions
+                if (i % removeStep == 0)
+                    avl.remove(rand() % i + 1);
             }
-        }
-        catch(const std::exception& e)
-        {
+        } catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
         }
 
@@ -909,11 +864,11 @@ public:
     }
 
     void test_load(enum TestType type) {
-        if (type == TestType::AVL){
+        if (type == TestType::AVL) {
             TEST_CASE(test_load_avl);
-        } else if (type == TestType::MAP){
+        } else if (type == TestType::MAP) {
             TEST_CASE(test_load_map);
-        } 
+        }
     }
 
     // 5. Test for memory leak.
@@ -922,10 +877,22 @@ public:
     // check for memory leaks probably do random insertion and deletion here and
     // check for memory leaks
 
-    void test_memory_leak(enum TestType type)
-    {
-        if (type == TestType::AVL)
-        {
+    void test_memory_leak(enum TestType type) {
+        if (type == TestType::AVL) {
+            TEST_CASE_PARAM(memory_leak_iterations, 100);
+            TEST_CASE_PARAM(memory_leak_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000);
+            TEST_CASE_PARAM(memory_leak_iterations, 100000);
+            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
+            TEST_CASE(memory_leak_avl_random);
+            TEST_CASE(memory_leak_avl_duplicate);
+            TEST_CASE(memory_leak_avl_empty);
+        } else if (type == TestType::MAP) {
             TEST_CASE_PARAM(memory_leak_iterations, 100);
             TEST_CASE_PARAM(memory_leak_iterations, 1000);
             TEST_CASE_PARAM(memory_leak_iterations, 10000);
@@ -940,31 +907,11 @@ public:
             TEST_CASE(memory_leak_avl_duplicate);
             TEST_CASE(memory_leak_avl_empty);
         }
-        else if(type == TestType::MAP)
-        {
-            TEST_CASE_PARAM(memory_leak_iterations, 100);
-            TEST_CASE_PARAM(memory_leak_iterations, 1000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000);
-            TEST_CASE_PARAM(memory_leak_iterations, 100000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
-            TEST_CASE(memory_leak_avl_random);
-            TEST_CASE(memory_leak_avl_duplicate);
-            TEST_CASE(memory_leak_avl_empty);
-        }
-        
     }
 
-    
     // 6. Test for speed of search (worst case).
-    void test_speed_search_map(enum TestType type)
-    {
-        if (type == TestType::AVL)
-        {
+    void test_speed_search_map(enum TestType type) {
+        if (type == TestType::AVL) {
             TEST_CASE_PARAM(test_speed_avl_exist, 10000);
             TEST_CASE_PARAM(test_speed_avl_exist, 10000000);
             TEST_CASE_PARAM(test_speed_avl_not_exist, 10000);
@@ -975,9 +922,7 @@ public:
             TEST_CASE_PARAM(test_speed_avl_top, 10000000);
             TEST_CASE_PARAM(test_speed_avl_middle, 10000);
             TEST_CASE_PARAM(test_speed_avl_middle, 10000000);
-        }
-        else if (type == TestType::MAP)
-        {
+        } else if (type == TestType::MAP) {
             TEST_CASE_PARAM(test_speed_map_exist, 10000);
             TEST_CASE_PARAM(test_speed_map_exist, 10000000);
             TEST_CASE_PARAM(test_speed_map_not_exist, 10000);
@@ -990,5 +935,4 @@ public:
             TEST_CASE_PARAM(test_speed_map_middle, 10000000);
         }
     }
-    
 };
