@@ -71,7 +71,11 @@ node *AVL::singleRightRotate(node *&t) { //        8
                                          //    4             12
                                          // 2     6     10        14
                                          // 1 3   5 7   9  11    13  15
+    if (t == NULL) return NULL;
     node *u = t->left;
+    if (u == NULL)
+        return NULL;
+
     //          8
     //    4(U)          12
     // 2     6     10        14
@@ -100,7 +104,11 @@ node *AVL::singleLeftRotate(node *&t) { //        8
                                         //    4             12
                                         // 2     6     10        14
                                         // 1 3   5 7   9  11    13  15
+    if (t == NULL) return NULL;
     node *u = t->right;
+    if (u == NULL)
+            return NULL;
+
     //          8
     //    4             12(U)
     // 2     6     10        14
@@ -131,7 +139,8 @@ node *AVL::doubleLeftRotate(node *&t) { // Right rotate the right node, then
     return singleLeftRotate(t);
 }
 
-node *AVL::doubleRightRotate(node *&t) { // Left rotate the left node, then right rotate the current node
+node *AVL::doubleRightRotate(
+    node *&t) { // Left rotate the left node, then right rotate the current node
     t->left = singleLeftRotate(t->left);
     return singleRightRotate(t);
 }
@@ -172,7 +181,7 @@ node *AVL::remove(int sin, node *t) {
     else if (t->left && t->right) {
         temp = findMin(t->right);
         t->empl.sin = temp->empl.sin;
-        t->right = remove(t->empl.sin, t->right);
+        t->right = remove(temp->empl.sin, t->right);
     }
     // With one or zero child
     else {
@@ -212,8 +221,6 @@ node *AVL::remove(int sin, node *t) {
 
 int AVL::height(node *t) { return (t == NULL ? -1 : t->height); }
 
-
-
 void AVL::inorder(node *t) {
     if (t == NULL)
         return;
@@ -224,19 +231,32 @@ void AVL::inorder(node *t) {
     inorder(t->right);
 }
 
-
 // public
 
 AVL::AVL() { root = NULL; }
 
 void AVL::insert(EmployeeInfo empl) { root = insert(empl, root); }
 
-void AVL::remove(int sin) { root = remove(sin, root); }
+void AVL::remove(int sin) {
+    // cout << "removing sin:" << sin << " on root " << root << endl;
+    root = remove(sin, root);
+}
 
 void AVL::display() {
+    outfile.open("inorder.txt");
     inorder(root);
     outfile << endl;
+    outfile.close();
 }
+
+
+void AVL::display(char file[]) {
+    outfile.open(file);
+    inorder(root);
+    outfile << endl;
+    outfile.close();
+}
+
 node *AVL::GetRoot() { return root; }
 node *AVL::Find(node *node, int sin) {
     if (node == NULL) {

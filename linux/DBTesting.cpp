@@ -21,8 +21,7 @@ using namespace std;
     cout << " Complete. " << endl;                                                                      \
     cout << "================================================================================" << endl;
 
-class DBTesting
-{
+
 
     /*
     Avl Only
@@ -42,6 +41,7 @@ class DBTesting
     6. Test for speed of search (worst case).
 
     */
+
 public:
     enum class TestType
     {
@@ -201,14 +201,136 @@ public:
     }
 
     // test deletion
+    AVL get_tree(int sin[], int n) {
+        AVL avl;
+        EmployeeInfo empl;
+        empl.age = 0;
+        empl.salary = 0;
+        empl.emplNumber = 0;
+        for (int i = 0; i < n; i++) {
+            empl.sin = sin[i];
+            avl.insert(empl);
+        }
+        return avl;
+    }
 
-    void test_deletion_1() {}
+    void test_remove_simple() {
+        int sin[] = {5};
+        AVL avl = get_tree(sin, 1);
+        avl.remove(5);
+        assert(avl.GetRoot() == NULL);
+        avl.remove(1);
+        assert(avl.GetRoot() == NULL);
+    }
 
-    void test_deletion_2() {}
+    void test_remove_leaf() {
+        /*          20                          20
+                10      30          =>      10      30
+            5
+        */
+        int sin[] = {20, 10, 30, 5};
+        AVL avl = get_tree(sin, 4);
+        avl.remove(5);
+        node *root = avl.GetRoot();
+        assert(root->empl.sin == 20);
+        assert(avl.Find(root, 5) == NULL);
+        assert(avl.getBalance(root) == 0);
+    }
 
-    void test_deletion_3() {}
+    void test_remove_single_child() {
+        /*          20                          20
+                10      30          =>      10      30
+                    25     40                    25
+        */
+        int sin[] = {20, 10, 30, 25, 40};
+        AVL avl = get_tree(sin, 5);
+        avl.remove(40);
+        node *root = avl.GetRoot();
+        assert(root->empl.sin == 20);
+        assert(avl.Find(root, 40) == NULL);
+        assert(avl.getBalance(root) == -1);
+    }
 
-    void test_deletion_4() {}
+    void test_remove_two_children() {
+        /*          20                           20
+                10      30          =>       10      35
+               5  15  25   35               5  15  25   40
+                    40
+        */
+        int sin[] = {20, 10, 30, 5, 15, 25, 35, 40};
+        AVL avl = get_tree(sin, 8);
+        avl.remove(30);
+        node *root = avl.GetRoot();
+        assert(avl.Find(root, 30) == NULL);
+        assert(root->empl.sin == 20);
+        assert(avl.getBalance(root) == 0);
+    }
+
+    void test_remove_root() {
+        /*          20                           25
+                10      30          =>       10      30
+               5  15  25   35               5  15  27   35
+                    27
+        */
+        int sin[] = {20, 10, 30, 5, 15, 25, 35, 27};
+        AVL avl = get_tree(sin, 8);
+        avl.remove(20);
+        node *root = avl.GetRoot();
+        assert(avl.Find(root, 20) == NULL);
+        assert(root->empl.sin == 25);
+        assert(avl.getBalance(root) == 0);
+    }
+
+    void test_remove_large_tree() {
+        int sin[] = {50, 20, 70, 10, 30, 60, 80, 5,  15, 25, 35,
+                     55, 65, 75, 85, 21, 13, 47, 38, 4,  2,  58};
+        int n = sizeof(sin) / sizeof(sin[0]);
+        int balance = 99;
+        AVL avl = get_tree(sin, n);
+
+        node *root = avl.GetRoot();
+        for (int i = 0; i < n; i++) {
+            avl.remove(sin[i]);
+            root = avl.GetRoot();
+            assert(avl.Find(root, sin[i]) == NULL);
+            balance = avl.getBalance(root);
+            assert(balance == 0 || balance == 1 || balance == -1);
+        }
+    }
+
+    void test_remove_in_sequence() {
+        int sin[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        int n = sizeof(sin) / sizeof(sin[0]);
+        int balance = 99;
+        AVL avl = get_tree(sin, n);
+
+        node *root = avl.GetRoot();
+        char file[50];
+        for (int i = 0; i < n; i++) {
+            avl.remove(sin[i]);
+            root = avl.GetRoot();
+            assert(avl.Find(root, sin[i]) == NULL);
+            balance = avl.getBalance(root);
+    
+            sprintf(file, "test_remove_in_sequence_%d.txt", i);
+            avl.display(file);
+            assert(balance == 0 || balance == 1 || balance == -1);
+            if (root) {
+                assert(avl.findMax(root)->empl.sin == 15);
+                assert(avl.findMin(root)->empl.sin == sin[i + 1]);
+            }
+        }
+    }
+
+    void test_deletion() {
+        TEST_CASE(test_remove_simple);
+        TEST_CASE(test_remove_leaf);
+        TEST_CASE(test_remove_single_child);
+        TEST_CASE(test_remove_two_children);
+        TEST_CASE(test_remove_root);
+        TEST_CASE(test_remove_large_tree);
+        TEST_CASE(test_remove_in_sequence);
+    }
 
     // 3. Test for maximum size.
 
@@ -582,3 +704,4 @@ public:
         cout << "Time taken to search for middle element in AVL of size " << i << " is " << timer.currtime() << endl;
     }
 };
+
