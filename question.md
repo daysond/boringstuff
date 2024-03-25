@@ -29,7 +29,6 @@ Inserts number 1 - 15 and then deletes them in the same order.
 Inserts number 1 - 15 in reversed order then deletes them in the same reserved order.
 
 
-
 ## Questions
 
 ### 1. Are there any other test that you feel are required? Describe them briefly.
@@ -90,3 +89,54 @@ For std::map, a wrapper would be required.
 
 For similar AVL tree, the code can be modified to so data can be injected into the test class.
 
+
+```
+'MemLeakTest.exe' (Win32): Loaded 'C:\Users\dayson\source\repos\memoryleak\x64\Debug\MemLeakTest.exe'. Symbols loaded.
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\ntdll.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\kernel32.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\KernelBase.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\msvcp140d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140_1d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
+The thread 0x730 has exited with code 0 (0x0).
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. 
+The thread 0x1704 has exited with code 0 (0x0).
+The thread 0x1a08 has exited with code 0 (0x0).
+The program '[15304] MemLeakTest.exe' has exited with code 0 (0x0).
+```
+
+```
+#include "DBTesting.cpp"
+#include <fstream>
+#include <iostream>
+#include <crtdbg.h>
+using namespace std;
+
+ofstream outfile;
+
+int main() {
+    // Enable debug heap allocations & leak check at program exit
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+    DBTesting dbt;
+
+    cout << "********** Testing Memory Leak for AVL Tree **********" << endl;
+    dbt.test_memory_leak(TestType::AVLTREE);
+
+    std::cout << "Press enter to continue...";
+    std::cin.get();
+
+    cout << "********** Testing Memory Leak for Map **********" << endl;
+    dbt.test_memory_leak(TestType::MAP);
+
+    std::cout << "Press enter to continue...";
+    std::cin.get();
+
+    std::cout << "All memory leak tests done.\n";
+
+    return 0;
+}
+```
