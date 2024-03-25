@@ -12,9 +12,7 @@ bool exists(std::string path){
 
 void writeToCSV(std::string filename,  int iterations, double mapTime, double avlTime) {
     bool fileExists = exists(filename);
-
-    ios_base::openmode mode = exists(filename)? ios::trunc : ios::app;
-    std::ofstream csv(filename, mode);
+    std::ofstream csv(filename, ios::app);
 
     if(csv.is_open() && !fileExists)
         csv << "iterations, map_time_taken, avl_time_taken\n";
