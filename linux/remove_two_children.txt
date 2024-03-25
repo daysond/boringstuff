@@ -1,8 +1,0 @@
- height:0 sin:5 employee number:0 salary:0 age:0
- height:1 sin:10 employee number:0 salary:0 age:0
- height:0 sin:15 employee number:0 salary:0 age:0
- height:2 sin:20 employee number:0 salary:0 age:0
- height:0 sin:25 employee number:0 salary:0 age:0
- height:1 sin:35 employee number:0 salary:0 age:0
- height:0 sin:40 employee number:0 salary:0 age:0
-
