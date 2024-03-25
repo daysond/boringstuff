@@ -6,7 +6,7 @@
 
 The tree was only populated with one node.
 
-### Delection:
+### Deletion:
 
 The below test cases cause segmetation fault.
 
@@ -39,7 +39,7 @@ Inserts number 1 - 15 in reversed order then deletes them in the same reserved o
 
 #### Windows:
 
-Output suggests no memory leak.
+Output suggests no memory leak for AVL and std::map.
 
 ```
 'MemLeakTest.exe' (Win32): Loaded 'C:\Users\dayson\source\repos\memoryleak\x64\Debug\MemLeakTest.exe'. Symbols loaded.
@@ -58,6 +58,22 @@ The thread 0x1704 has exited with code 0 (0x0).
 The thread 0x1a08 has exited with code 0 (0x0).
 The program '[15304] MemLeakTest.exe' has exited with code 0 (0x0).
 ```
+
+
+### Speed test 
+
+For graphs, see [Speed_Graphs.pdf](./Speed_Graphs.pdf)
+
+- Conclusion: 
+
+The provided graphs demonstrate the performance of AVL trees and Maps when searching for existing and non-existing elements. 
+The AVL tree shows greater time taken for existing elements, while its performance for non-existing elements is more stable. 
+The Map demonstrates consistently low times for existing elements with some spikes but higher differences in time taken when searching for non-existing elements.
+To conclude, Maps may offer faster searches for existing elements and AVL trees may be more predictable for non-existing elements 
+
+
+
+
 
 
 
