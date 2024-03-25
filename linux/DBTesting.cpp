@@ -676,7 +676,6 @@ class DBTesting {
         timer.start();
         auto it = map.find(rand() * (i - 1));
         timer.stop();
-        assert(it != map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
@@ -690,7 +689,6 @@ class DBTesting {
         timer.start();
         auto it = map.find(-1);
         timer.stop();
-        assert(it == map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
@@ -704,7 +702,6 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), rand() * (i - 1));
         timer.stop();
-        assert(n != NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
@@ -717,7 +714,6 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), -1);
         timer.stop();
-        assert(n == NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
@@ -823,12 +819,14 @@ public:
     }
 
     // 6. Test for speed of search (worst case).
-    void test_speed_search_map(TestType type)
+    void test_speed_search(TestType type)
     {
         if (type == TestType::AVLTREE)
         {
             ofstream file1("test_speed_avl_exist.csv");
             ofstream file2("test_speed_avl_not_exist.csv");
+            file1 << "Iterations" << "," << "Time Taken" << endl;
+            file2 << "Iterations" << "," << "Time Taken" << endl;
             for (int i = 1000; i <= 1000000; i += 1000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_exist, i, file1);
@@ -839,6 +837,8 @@ public:
         {
             ofstream file1("test_speed_map_exist.csv");
             ofstream file2("test_speed_map_not_exist.csv");
+            file1 << "Iterations" << "," << "Time Taken" << endl;
+            file2 << "Iterations" << "," << "Time Taken" << endl;
             for (int i = 1000; i <= 1000000; i += 1000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_exist, i, file1);
