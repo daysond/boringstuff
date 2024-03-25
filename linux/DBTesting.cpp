@@ -48,7 +48,8 @@ using namespace std;
             "================"                                                 \
          << endl;
 
-class DBTesting {
+class DBTesting
+{
 
     /*
     Avl Only
@@ -70,7 +71,8 @@ class DBTesting {
 
     // Test insertion
 
-    void test_single_node() {
+    void test_single_node()
+    {
         AVL avl;
         EmployeeInfo empl;
         empl.age = 0;
@@ -86,7 +88,8 @@ class DBTesting {
         assert(avl.Find(root, 1)->empl.sin == 1);
     }
 
-    void test_right_insertion() {
+    void test_right_insertion()
+    {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -94,7 +97,8 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < iterations; i++)
+        {
             empl.sin = i;
             avl.insert(empl);
             // assert balance maintained
@@ -106,7 +110,8 @@ class DBTesting {
         }
     }
 
-    void test_left_insertion() {
+    void test_left_insertion()
+    {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -114,7 +119,8 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = iterations; i > 0; i--) {
+        for (int i = iterations; i > 0; i--)
+        {
             empl.sin = i;
             avl.insert(empl);
             // assert balance maintained
@@ -126,7 +132,8 @@ class DBTesting {
         }
     }
 
-    void test_double_roatation() {
+    void test_double_roatation()
+    {
         // Left-Right
         AVL avl;
         EmployeeInfo empl;
@@ -156,7 +163,8 @@ class DBTesting {
         assert(avl2.getBalance(root) == 0);
     }
 
-    void test_random_insertion() {
+    void test_random_insertion()
+    {
         AVL avl;
         srand(42);
         const int iterations = 1000;
@@ -165,7 +173,8 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < iterations; i++)
+        {
             empl.sin = rand();
             avl.insert(empl);
             // assert balance maintained
@@ -175,7 +184,8 @@ class DBTesting {
         }
     }
 
-    void test_duplicate_insertion() {
+    void test_duplicate_insertion()
+    {
         AVL avl;
         const int iterations = 100;
         EmployeeInfo empl;
@@ -183,7 +193,8 @@ class DBTesting {
         empl.salary = 0;
         empl.emplNumber = 0;
 
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < iterations; i++)
+        {
             empl.sin = 1;
             avl.insert(empl);
             // assert balance maintained
@@ -679,7 +690,6 @@ class DBTesting {
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
-        file.close();
     }
 
     void test_speed_map_not_exist(int i, ofstream &file)
@@ -692,7 +702,6 @@ class DBTesting {
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
-        file.close();
     }
 
     void test_speed_avl_exist(int i, ofstream &file)
@@ -825,9 +834,13 @@ public:
         {
             ofstream file1("test_speed_avl_exist.csv");
             ofstream file2("test_speed_avl_not_exist.csv");
-            file1 << "Iterations" << "," << "Time Taken" << endl;
-            file2 << "Iterations" << "," << "Time Taken" << endl;
-            for (int i = 1000; i <= 1000000; i += 1000)
+            file1 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            file2 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            for (int i = 1000; i <= 1000000; i += 10000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_exist, i, file1);
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_not_exist, i, file2);
@@ -837,9 +850,13 @@ public:
         {
             ofstream file1("test_speed_map_exist.csv");
             ofstream file2("test_speed_map_not_exist.csv");
-            file1 << "Iterations" << "," << "Time Taken" << endl;
-            file2 << "Iterations" << "," << "Time Taken" << endl;
-            for (int i = 1000; i <= 1000000; i += 1000)
+            file1 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            file2 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            for (int i = 1000; i <= 1000000; i += 10000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_exist, i, file1);
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_not_exist, i, file2);
