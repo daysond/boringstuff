@@ -531,8 +531,8 @@ class DBTesting {
     void test_load_avl(int numIterations)
     {
         AVL avl;
-        int findStep = 100;
-        int removeStep = 500;
+        int findStep = 10;
+        int removeStep = 50;
         try
         {
             for (int i = 0; i < numIterations; i++)
@@ -802,11 +802,11 @@ public:
     {
         if (type == TestType::AVLTREE)
         {
-            TEST_CASE_PARAM(test_max_size_avl, func);
+            test_max_size_avl(&func);
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE_PARAM(test_max_size_map, func);
+            test_max_size_map(&func);
         }
     }
 
@@ -816,12 +816,10 @@ public:
         if (type == TestType::AVLTREE)
         {
             test_load_avl(numIterations);
-            // TEST_CASE_PARAM(test_load_avl, numIterations);
         }
         else if (type == TestType::MAP)
         {
             test_load_map(numIterations);
-            // TEST_CASE_PARAM(test_load_map, numIterations);
         }
     }
 

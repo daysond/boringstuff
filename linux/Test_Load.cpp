@@ -13,9 +13,13 @@ bool exists(std::string path) {
 void writeToCSV(std::string filename, int iterations, double mapTime,
                 double avlTime) {
     bool fileExists = exists(filename);
+<<<<<<< HEAD
 
     ios_base::openmode mode = exists(filename) ? ios::trunc : ios::app;
     std::ofstream csv(filename, mode);
+=======
+    std::ofstream csv(filename, ios::app);
+>>>>>>> test-map
 
     if (csv.is_open() && !fileExists)
         csv << "iterations, map_time_taken, avl_time_taken\n";
@@ -33,9 +37,9 @@ ofstream outfile;
 int main() {
     DBTesting dbt;
     Timer t;
-    cout << "********** Testing Load for AVL Tree & Map **********" << endl;
-    int size = 3;
-    int iter[size] = {100, 500, 1000};
+    
+    int iter =  10000;
+    int size = 1000000;
     int idx = 0;
 
     double avl_t = 0;
@@ -44,20 +48,21 @@ int main() {
     while (idx < size) {
         t.reset();
         t.start();
-        dbt.test_load(TestType::AVLTREE, iter[idx]);
+        dbt.test_load(TestType::AVLTREE, iter);
         t.stop();
 
         avl_t = t.starttime() - t.currtime();
 
         t.reset();
         t.start();
-        dbt.test_load(TestType::MAP, iter[idx]);
+        dbt.test_load(TestType::MAP, iter);
         t.stop();
 
         map_t = t.starttime() - t.currtime();
 
-        writeToCSV("loadPerformance.csv", iter[idx], map_t, avl_t);
+        writeToCSV("loadPerformance.csv", iter, map_t, avl_t);
         idx++;
+        iter += 10000;
     }
 
     std::cout << "Press enter to continue...";
