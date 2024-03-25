@@ -1,3 +1,35 @@
+## BUGS:
+
+### Insertion:
+
+#### On TC - Duplicate Insertion: 
+
+The tree was only populated with one node.
+
+### Delection:
+
+The below test cases cause segmetation fault.
+
+```
+        // TEST_CASE(test_remove_large_tree);
+        // TEST_CASE(test_remove_in_sequence);
+        // TEST_CASE(test_remove_in_reverse_sequence);
+```
+
+#### test_remove_large_tree
+
+Inserts random number into the tree and deletes them in the same order that they are inserted.
+
+#### test_remove_in_sequence
+
+Inserts number 1 - 15 and then deletes them in the same order.
+
+#### test_remove_in_reverse_sequence
+
+Inserts number 1 - 15 in reversed order then deletes them in the same reserved order.
+
+
+
 ## Questions
 
 ### 1. Are there any other test that you feel are required? Describe them briefly.
@@ -57,3 +89,4 @@ It is not really reusable given that the dependency EmployeeInfo. However, we co
 For std::map, a wrapper would be required.
 
 For similar AVL tree, the code can be modified to so data can be injected into the test class.
+
