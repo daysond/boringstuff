@@ -2,11 +2,20 @@
 #include <fstream>
 #include <iostream>
 
+#if PLATFORM == WINDOWS
+// windows memory leak detection with VS
+#include <crtdbg.h>
+#endif
 using namespace std;
 
 ofstream outfile;
 
 int main() {
+
+    #if PLATFORM == WINDOWS
+    // Enable debug heap allocations & leak check at program exit
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    #endif
 
     DBTesting dbt;
 

@@ -39,6 +39,26 @@ Inserts number 1 - 15 in reversed order then deletes them in the same reserved o
 
 #### Windows:
 
+Output suggests no memory leak.
+
+```
+'MemLeakTest.exe' (Win32): Loaded 'C:\Users\dayson\source\repos\memoryleak\x64\Debug\MemLeakTest.exe'. Symbols loaded.
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\ntdll.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\kernel32.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\KernelBase.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\msvcp140d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140_1d.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
+The thread 0x730 has exited with code 0 (0x0).
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. 
+'MemLeakTest.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. 
+The thread 0x1704 has exited with code 0 (0x0).
+The thread 0x1a08 has exited with code 0 (0x0).
+The program '[15304] MemLeakTest.exe' has exited with code 0 (0x0).
+```
+
 
 
 ## Questions
