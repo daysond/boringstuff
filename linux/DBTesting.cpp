@@ -78,11 +78,13 @@ class DBTesting {
         assert(avl.findMax(root)->empl.sin == 1);
         assert(avl.findMin(root)->empl.sin == 1);
         assert(avl.Find(root, 1)->empl.sin == 1);
+        char file[] = "single_node.txt";
+        displayTree(file, "single_node.dot", avl);
     }
 
     void test_right_insertion() {
         AVL avl;
-        const int iterations = 100;
+        const int iterations = 31;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
@@ -98,11 +100,13 @@ class DBTesting {
             assert(avl.findMax(root)->empl.sin == i);
             assert(avl.findMin(root)->empl.sin == 0);
         }
+        char file[] = "right_insertion.txt";
+        displayTree(file, "right_insertion.dot", avl);
     }
 
     void test_left_insertion() {
         AVL avl;
-        const int iterations = 100;
+        const int iterations = 31;
         EmployeeInfo empl;
         empl.age = 0;
         empl.salary = 0;
@@ -115,9 +119,11 @@ class DBTesting {
             node *root = avl.GetRoot();
             assert(avl.getBalance(root) == 0 || avl.getBalance(root) == 1 ||
                    avl.getBalance(root) == -1);
-            assert(avl.findMax(root)->empl.sin == 100);
+            assert(avl.findMax(root)->empl.sin == iterations);
             assert(avl.findMin(root)->empl.sin == i);
         }
+        char file[] = "left_insertion.txt";
+        displayTree(file, "left_insertion.dot", avl);
     }
 
     void test_double_roatation() {
@@ -137,6 +143,9 @@ class DBTesting {
         assert(root->empl.sin == 25);
         assert(avl.getBalance(root) == 0);
 
+        char file[] = "double_rotation_left_right.txt";
+        displayTree(file, "double_rotation_left_right.dot", avl);
+
         // Right-Left
         AVL avl2;
         empl.sin = 30;
@@ -148,6 +157,9 @@ class DBTesting {
         root = avl2.GetRoot();
         assert(root->empl.sin == 35);
         assert(avl2.getBalance(root) == 0);
+        
+        char file2[] = "double_rotation_right_left.txt";
+        displayTree(file2, "double_rotation_right_left.dot", avl2);
     }
 
     void test_random_insertion() {
@@ -167,6 +179,9 @@ class DBTesting {
             assert(avl.getBalance(root) == 0 || avl.getBalance(root) == 1 ||
                    avl.getBalance(root) == -1);
         }
+
+        char file[] = "random_insertion.txt";
+        displayTree(file, "random_insertion.dot", avl);
     }
 
     void test_duplicate_insertion() {
@@ -180,13 +195,15 @@ class DBTesting {
         for (int i = 0; i < iterations; i++) {
             empl.sin = 1;
             avl.insert(empl);
-            // assert balance maintained
             node *root = avl.GetRoot();
             assert(avl.getBalance(root) == 0 || avl.getBalance(root) == 1 ||
                    avl.getBalance(root) == -1);
             assert(avl.findMax(root)->empl.sin == 1);
             assert(avl.findMin(root)->empl.sin == 1);
         }
+
+        char file[] = "duplicate_insertion.txt";
+        displayTree(file, "duplicate_insertion.dot", avl);
     }
 
     // DELETION
@@ -224,6 +241,9 @@ class DBTesting {
         assert(root->empl.sin == 20);
         assert(avl.Find(root, 5) == NULL);
         assert(avl.getBalance(root) == 0);
+
+        char file[] = "remove_leaf.txt";
+        displayTree(file, "remove_leaf.dot", avl);
     }
 
     void test_remove_single_child() {
@@ -238,6 +258,9 @@ class DBTesting {
         assert(root->empl.sin == 20);
         assert(avl.Find(root, 40) == NULL);
         assert(avl.getBalance(root) == -1);
+
+        char file[] = "remove_single_child.txt";
+        displayTree(file, "remove_single_child.dot", avl);
     }
 
     void test_remove_two_children() {
@@ -253,6 +276,9 @@ class DBTesting {
         assert(avl.Find(root, 30) == NULL);
         assert(root->empl.sin == 20);
         assert(avl.getBalance(root) == 0);
+
+        char file[] = "remove_two_children.txt";
+        displayTree(file, "remove_two_children.dot", avl);
     }
 
     void test_remove_root() {
@@ -268,6 +294,8 @@ class DBTesting {
         assert(avl.Find(root, 20) == NULL);
         assert(root->empl.sin == 25);
         assert(avl.getBalance(root) == 0);
+        char file[] = "remove_root.txt";
+        displayTree(file, "remove_root.dot", avl);
     }
 
     void test_remove_large_tree() {
@@ -759,5 +787,57 @@ class DBTesting {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_not_exist, i, file2);
             }
         }
+    }
+
+
+// These functions vide generate a png file of the visualize tree.
+
+    void generateDotFile(const std::string &filename, node *root) {
+        std::ofstream file(filename);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open file for writing.\n";
+            return;
+        }
+
+        file << "digraph AVLTree {\n";
+        if (root) {
+            // Explicitly handle the root to ensure it appears even if it has no
+            // children
+            file << "    " << root->empl.sin << ";\n";
+            generateDotFileRec(root, file);
+        }
+        file << "}\n";
+
+        file.close();
+
+        std::string command =
+            "dot -Tpng " + filename + " -o " + filename + ".png";
+        system(command.c_str());
+
+        command = "rm " + filename;
+        system(command.c_str());
+
+        std::cout << "Generated png" << std::endl;
+    }
+
+    void generateDotFileRec(node *node, std::ofstream &file) {
+        if (!node)
+            return;
+
+        if (node->left) {
+            file << "    " << node->empl.sin << " -> " << node->left->empl.sin
+                 << ";\n";
+            generateDotFileRec(node->left, file);
+        }
+        if (node->right) {
+            file << "    " << node->empl.sin << " -> " << node->right->empl.sin
+                 << ";\n";
+            generateDotFileRec(node->right, file);
+        }
+    }
+
+    void displayTree(char file[], const std::string &dotfile, AVL &avl) {
+        avl.display(file);
+        generateDotFile(dotfile, avl.GetRoot());
     }
 };

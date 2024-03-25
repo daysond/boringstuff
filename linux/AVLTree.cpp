@@ -240,8 +240,10 @@ void AVL::display() {
 }
 
 void AVL::display(char file[]) {
+    outfile.open(file);
     inorder(root);
     outfile << endl;
+    outfile.close();
 }
 
 node *AVL::GetRoot() { return root; }

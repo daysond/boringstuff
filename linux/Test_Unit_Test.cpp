@@ -18,10 +18,15 @@ int main() {
 
     std::cout << "Insertion tests passed.\n";
 
+    std::cout << "Press enter to continue...";
+    std::cin.get();
+
     cout << "\n\n********** Testing Deletion **********" << endl;
     dbt.test_deletion();
     std::cout << "Deletion tests passed.\n";
+    
+    std::cout << "Press enter to continue...";
+    std::cin.get();
 
-    std::cout << "All tests passed.\n";
     return 0;
 }
