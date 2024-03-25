@@ -65,9 +65,9 @@ class DBTesting {
 // ==================== Visualization ====================
 
 /*
-These functions vide generate a png file of the visualize tree.
+These functions visualize the AVL tree by generating a dot file and then converting it to a png file.
 
-generateDotFile: Generates a dot file of the tree.
+generateDotFile: Generates a dot file of the tree and converts it to png.
 
 generateDotFileRec: Recursively writes to the dot file.
 
