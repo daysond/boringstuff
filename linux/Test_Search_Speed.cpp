@@ -13,15 +13,18 @@ int main() {
 
     DBTesting dbt;
     // needs to be timed
-    cout << "********** Testing Max Size **********" << endl;
-    dbt.test_insertion();
+    cout << "********** Testing Search Speed AVL **********" << endl;
+    dbt.test_speed_search(TestType::AVLTREE);
 
-    std::cout << "Insertion tests passed.\n";
+    std::cout << "Press enter to continue...";
+    std::cin.get();
 
-    cout << "\n\n********** Testing Deletion **********" << endl;
-    dbt.test_deletion();
-    std::cout << "Deletion tests passed.\n";
+    cout << "********** Testing Search Speed for Map **********" << endl;
+    dbt.test_speed_search(TestType::MAP);
 
-    std::cout << "All tests passed.\n";
+    std::cout << "Press enter to continue...";
+    std::cin.get();
+
+    std::cout << "All Search Speed tests done.\n";
     return 0;
 }

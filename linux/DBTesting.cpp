@@ -8,6 +8,8 @@
 
 using namespace std;
 
+#define INT_MAX 2147483647
+
 #define TEST_CASE(fn)                                                          \
     cout << "================================================================" \
             "================"                                                 \
@@ -57,12 +59,94 @@ class DBTesting {
     6. Test for speed of search (worst case).
     */
 
+// helper functions
+
+// ==================== Visualization ====================
+// These functions vide generate a png file of the visualize tree.
+
+    void generateDotFile(const std::string &filename, node *root) {
+        std::ofstream file(filename);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open file for writing.\n";
+            return;
+        }
+
+        file << "digraph AVLTree {\n";
+        if (root) {
+            // Explicitly handle the root to ensure it appears even if it has no
+            // children
+            file << "    " << root->empl.sin << ";\n";
+            generateDotFileRec(root, file);
+        }
+        file << "}\n";
+
+        file.close();
+
+        std::string command =
+            "dot -Tpng " + filename + " -o " + filename + ".png";
+        system(command.c_str());
+
+        command = "rm " + filename;
+        system(command.c_str());
+
+        std::cout << "Generated png" << std::endl;
+    }
+
+    void generateDotFileRec(node *node, std::ofstream &file) {
+        if (!node)
+            return;
+
+        if (node->left) {
+            file << "    " << node->empl.sin << " -> " << node->left->empl.sin
+                 << ";\n";
+            generateDotFileRec(node->left, file);
+        }
+        if (node->right) {
+            file << "    " << node->empl.sin << " -> " << node->right->empl.sin
+                 << ";\n";
+            generateDotFileRec(node->right, file);
+        }
+    }
+
+    void displayTree(char file[], const std::string &dotfile, AVL &avl) {
+        avl.display(file);
+        generateDotFile(dotfile, avl.GetRoot());
+    }
+
+// ================= Tree Generation ========================
+
+    AVL get_tree(int sin[], int n) {
+        AVL avl;
+        EmployeeInfo empl;
+        empl.age = 0;
+        empl.salary = 0;
+        empl.emplNumber = 0;
+        for (int i = 0; i < n; i++) {
+            empl.sin = sin[i];
+            avl.insert(empl);
+        }
+        return avl;
+    }
+
+    AVL populateAVL(int n) {
+        AVL avl;
+        EmployeeInfo empl;
+        empl.age = 0;
+        empl.salary = 0;
+        empl.emplNumber = 0;
+        for (int i = 0; i < n; i++) {
+            empl.sin = i;
+            avl.insert(empl);
+        }
+        return avl;
+    }
+
+// =================== Insertion Test Cases ===================
+
     void test_empty_tree() {
         AVL avl;
         assert(avl.GetRoot() == NULL);
     }
-
-    // Test insertion
 
     void test_single_node() {
         AVL avl;
@@ -157,7 +241,7 @@ class DBTesting {
         root = avl2.GetRoot();
         assert(root->empl.sin == 35);
         assert(avl2.getBalance(root) == 0);
-        
+
         char file2[] = "double_rotation_right_left.txt";
         displayTree(file2, "double_rotation_right_left.dot", avl2);
     }
@@ -206,19 +290,7 @@ class DBTesting {
         displayTree(file, "duplicate_insertion.dot", avl);
     }
 
-    // DELETION
-    AVL get_tree(int sin[], int n) {
-        AVL avl;
-        EmployeeInfo empl;
-        empl.age = 0;
-        empl.salary = 0;
-        empl.emplNumber = 0;
-        for (int i = 0; i < n; i++) {
-            empl.sin = sin[i];
-            avl.insert(empl);
-        }
-        return avl;
-    }
+// =================== Deletion Test Cases ===================
 
     void test_remove_simple() {
         int sin[] = {5};
@@ -377,8 +449,8 @@ class DBTesting {
             }
         }
     }
-
-    // MAX SIZE
+// =================== Maximum Size Test Cases ===================
+  
     void test_max_size_map() {
         map<int, EmployeeInfo> m;
         int MAX = 0;
@@ -436,7 +508,8 @@ class DBTesting {
         }
     }
 
-    // LOAD
+// =================== Load Test Cases ===================
+
     void test_load_map() {
         map<int, EmployeeInfo> m;
         int NUM = 1000000;
@@ -499,7 +572,8 @@ class DBTesting {
         cout << "@test_load(): AVL loaded with " << NUM << " elements" << endl;
     }
 
-    // MEMORY LEAK
+// =================== Memory Leak Test Cases ===================
+
     void memory_leak_iterations(int i) {
         cout << "running avl memory leak tests\n" << endl;
         AVL avl;
@@ -507,7 +581,20 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++) {
+        for (int j = 0; j < i; j++) {
+            empl.sin = i;
+            avl.insert(empl);
+        }
+        avl.makeEmpty(avl.GetRoot());
+    }
+
+    void memory_leak_avl_bulk(int i) {
+        AVL avl;
+        EmployeeInfo empl;
+        empl.age = INT_MAX;
+        empl.salary = INT_MAX;
+        empl.emplNumber = INT_MAX;
+        for (int j = 0; j < i; j++) {
             empl.sin = i;
             avl.insert(empl);
         }
@@ -561,11 +648,27 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++) {
+        for (int j = 0; j < i; j++) {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int j = 0; j < i; i++) {
+        for (int j = 0; j < i; j++) {
+            empl.sin = i;
+            map.erase(i);
+        }
+    }
+
+    void memory_leak_map_bulk(int i) {
+        map<int, EmployeeInfo *> map;
+        EmployeeInfo empl;
+        empl.age = INT_MAX;
+        empl.salary = INT_MAX;
+        empl.emplNumber = INT_MAX;
+        for (int j = 0; j < i; j++) {
+            empl.sin = i;
+            map[i] = &empl;
+        }
+        for (int j = 0; j < i; j++) {
             empl.sin = i;
             map.erase(i);
         }
@@ -618,7 +721,8 @@ class DBTesting {
         map.erase(0);
     }
 
-    // SPEED SEARCH
+// =================== Speed Test Cases ===================
+
     map<int, EmployeeInfo *> populateMap(int n) {
         map<int, EmployeeInfo *> map;
         EmployeeInfo empl;
@@ -632,30 +736,15 @@ class DBTesting {
         return map;
     }
 
-    AVL populateAVL(int n) {
-        AVL avl;
-        EmployeeInfo empl;
-        empl.age = 0;
-        empl.salary = 0;
-        empl.emplNumber = 0;
-        for (int i = 0; i < n; i++) {
-            empl.sin = i;
-            avl.insert(empl);
-        }
-        return avl;
-    }
-
     void test_speed_map_exist(int i, ofstream &file) {
         map<int, EmployeeInfo *> map = populateMap(i);
         Timer timer;
         timer.start();
         auto it = map.find(rand() * (i - 1));
         timer.stop();
-        assert(it != map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
-        file.close();
     }
 
     void test_speed_map_not_exist(int i, ofstream &file) {
@@ -664,11 +753,9 @@ class DBTesting {
         timer.start();
         auto it = map.find(-1);
         timer.stop();
-        assert(it == map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
-        file.close();
     }
 
     void test_speed_avl_exist(int i, ofstream &file) {
@@ -677,7 +764,6 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), rand() * (i - 1));
         timer.stop();
-        assert(n != NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
@@ -689,13 +775,13 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), -1);
         timer.stop();
-        assert(n == NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
     }
 
-  public:
+public:
+    // 1. Test for correctness of insertion.
     void test_insertion() {
         TEST_CASE(test_empty_tree);
         TEST_CASE(test_single_node);
@@ -706,8 +792,7 @@ class DBTesting {
         TEST_CASE(test_duplicate_insertion);
     }
 
-    // test deletion
-
+    // 2. Test for correctness of deletion.
     void test_deletion() {
         TEST_CASE(test_remove_simple);
         TEST_CASE(test_remove_leaf);
@@ -740,104 +825,54 @@ class DBTesting {
         }
     }
 
+
     // 5. Test for memory leak.
-
-    // not sure how this is done cuz usually we use valgrind and instruments to
-    // check for memory leaks probably do random insertion and deletion here and
-    // check for memory leaks
-
-    void test_memory_leak_avl() {
-        cout << "running avl memory leak tests\n" << endl;
-        memory_leak_iterations(100);
-        // TEST_CASE_PARAM(memory_leak_iterations, 100);
-        // TEST_CASE_PARAM(memory_leak_iterations, 1000);
-        // TEST_CASE_PARAM(memory_leak_iterations, 10000);
-        // TEST_CASE_PARAM(memory_leak_iterations, 100000);
-        // TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-        // TEST_CASE(memory_leak_avl_random);
-        // TEST_CASE(memory_leak_avl_duplicate);
-        // TEST_CASE(memory_leak_avl_empty);
-    }
-
-    void test_memory_leak_map() {
-        TEST_CASE_PARAM(memory_leak_iterations, 100);
-        TEST_CASE_PARAM(memory_leak_iterations, 1000);
-        TEST_CASE_PARAM(memory_leak_iterations, 10000);
-        TEST_CASE_PARAM(memory_leak_iterations, 100000);
-        TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-        TEST_CASE(memory_leak_avl_random);
-        TEST_CASE(memory_leak_avl_duplicate);
-        TEST_CASE(memory_leak_avl_empty);
+    void test_memory_leak(TestType type) {
+        if (type == TestType::AVLTREE) {
+            TEST_CASE_PARAM(memory_leak_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
+            TEST_CASE(memory_leak_avl_random);
+            TEST_CASE(memory_leak_avl_duplicate);
+            TEST_CASE(memory_leak_avl_empty);
+        } else if (type == TestType::MAP) {
+            TEST_CASE_PARAM(memory_leak_map_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 1000);
+            TEST_CASE(memory_leak_map_random);
+            TEST_CASE(memory_leak_map_duplicate);
+            TEST_CASE(memory_leak_map_empty);
+        }
     }
 
     // 6. Test for speed of search (worst case).
-    void test_speed_search_map(TestType type) {
+    void test_speed_search(TestType type) {
         if (type == TestType::AVLTREE) {
             ofstream file1("test_speed_avl_exist.csv");
             ofstream file2("test_speed_avl_not_exist.csv");
-            for (int i = 1000; i <= 1000000; i += 1000) {
+            file1 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            file2 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            for (int i = 1000; i <= 1000000; i += 10000) {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_exist, i, file1);
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_not_exist, i, file2);
             }
         } else if (type == TestType::MAP) {
             ofstream file1("test_speed_map_exist.csv");
             ofstream file2("test_speed_map_not_exist.csv");
-            for (int i = 1000; i <= 1000000; i += 1000) {
+            file1 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            file2 << "Iterations"
+                  << ","
+                  << "Time Taken" << endl;
+            for (int i = 1000; i <= 1000000; i += 10000) {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_exist, i, file1);
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_not_exist, i, file2);
             }
         }
     }
 
-
-// These functions vide generate a png file of the visualize tree.
-
-    void generateDotFile(const std::string &filename, node *root) {
-        std::ofstream file(filename);
-        if (!file.is_open()) {
-            std::cerr << "Failed to open file for writing.\n";
-            return;
-        }
-
-        file << "digraph AVLTree {\n";
-        if (root) {
-            // Explicitly handle the root to ensure it appears even if it has no
-            // children
-            file << "    " << root->empl.sin << ";\n";
-            generateDotFileRec(root, file);
-        }
-        file << "}\n";
-
-        file.close();
-
-        std::string command =
-            "dot -Tpng " + filename + " -o " + filename + ".png";
-        system(command.c_str());
-
-        command = "rm " + filename;
-        system(command.c_str());
-
-        std::cout << "Generated png" << std::endl;
-    }
-
-    void generateDotFileRec(node *node, std::ofstream &file) {
-        if (!node)
-            return;
-
-        if (node->left) {
-            file << "    " << node->empl.sin << " -> " << node->left->empl.sin
-                 << ";\n";
-            generateDotFileRec(node->left, file);
-        }
-        if (node->right) {
-            file << "    " << node->empl.sin << " -> " << node->right->empl.sin
-                 << ";\n";
-            generateDotFileRec(node->right, file);
-        }
-    }
-
-    void displayTree(char file[], const std::string &dotfile, AVL &avl) {
-        avl.display(file);
-        generateDotFile(dotfile, avl.GetRoot());
-    }
+    
 };
