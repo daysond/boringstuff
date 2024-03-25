@@ -23,5 +23,6 @@ int main() {
     std::cin.get();
 
     std::cout << "All memory leak tests done.\n";
+    std::cout << "In case memory leak, test AVL and map separately.\n";
     return 0;
 }

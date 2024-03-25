@@ -1,4 +1,4 @@
-## BUGS:
+## Report:
 
 ### Insertion:
 
@@ -27,6 +27,17 @@ Inserts number 1 - 15 and then deletes them in the same order.
 #### test_remove_in_reverse_sequence
 
 Inserts number 1 - 15 in reversed order then deletes them in the same reserved order.
+
+
+### Memory Leak
+
+#### Linux:
+
+- AVL: no memory leak found
+
+- MAP: no memory leak found
+
+#### Windows:
 
 
 
