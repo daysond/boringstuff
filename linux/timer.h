@@ -1,3 +1,6 @@
+#ifndef TIMER_H
+#define TIMER_H
+
 #include <time.h>
 #define POSIX 1
 #define WINDOWS 2
@@ -24,6 +27,8 @@ The following are the member functions of Timer and their usage:
   reset();  stops the clock and resets the timer to 0
 */
 
+
+
 class Timer {
 #if PLATFORM == WINDOWS
 	clock_t starttime_;
@@ -42,3 +47,6 @@ public:
 	double currtime();
 	double starttime();
 };
+
+#endif // TIMER_H
+

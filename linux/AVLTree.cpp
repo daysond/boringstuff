@@ -71,11 +71,7 @@ node *AVL::singleRightRotate(node *&t) { //        8
                                          //    4             12
                                          // 2     6     10        14
                                          // 1 3   5 7   9  11    13  15
-    if (t == NULL) return NULL;
     node *u = t->left;
-    if (u == NULL)
-        return NULL;
-
     //          8
     //    4(U)          12
     // 2     6     10        14
@@ -104,11 +100,7 @@ node *AVL::singleLeftRotate(node *&t) { //        8
                                         //    4             12
                                         // 2     6     10        14
                                         // 1 3   5 7   9  11    13  15
-    if (t == NULL) return NULL;
     node *u = t->right;
-    if (u == NULL)
-            return NULL;
-
     //          8
     //    4             12(U)
     // 2     6     10        14
@@ -243,18 +235,13 @@ void AVL::remove(int sin) {
 }
 
 void AVL::display() {
-    outfile.open("inorder.txt");
     inorder(root);
     outfile << endl;
-    outfile.close();
 }
 
-
 void AVL::display(char file[]) {
-    outfile.open(file);
     inorder(root);
     outfile << endl;
-    outfile.close();
 }
 
 node *AVL::GetRoot() { return root; }

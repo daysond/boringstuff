@@ -1,5 +1,8 @@
 // AVLTree.cpp: AVL Tree Implementation in C++   */
 
+#ifndef AVL_TREE_H
+#define AVL_TREE_H
+
 using namespace std;
 
 typedef struct EmployeeInfo {
@@ -67,3 +70,5 @@ class AVL {
     // Get the balance of a node
     int getBalance(node *t);
 };
+
+#endif // AVL_TREE_H
