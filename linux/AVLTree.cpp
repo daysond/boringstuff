@@ -6,7 +6,7 @@
 
 using namespace std;
 
-extern ofstream outfile;
+ofstream outfile;
 
 void AVL::makeEmpty(node *t) {
     if (t == NULL)

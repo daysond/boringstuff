@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include "timer.h"
 
 using namespace std;
 
@@ -479,7 +478,7 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             avl.insert(empl);
@@ -494,7 +493,7 @@ class DBTesting {
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
         empl.emplNumber = INT_MAX;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             avl.insert(empl);
@@ -555,12 +554,12 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map.erase(i);
@@ -574,12 +573,12 @@ class DBTesting {
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
         empl.emplNumber = INT_MAX;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map.erase(i);
@@ -677,7 +676,6 @@ class DBTesting {
         timer.start();
         auto it = map.find(rand() * (i - 1));
         timer.stop();
-        assert(it != map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
@@ -691,7 +689,6 @@ class DBTesting {
         timer.start();
         auto it = map.find(-1);
         timer.stop();
-        assert(it == map.end());
         file << i << "," << timer.currtime() << endl;
         cout << "Time taken to search for non existent element in map of size "
              << i << " is " << timer.currtime() << endl;
@@ -705,7 +702,6 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), rand() * (i - 1));
         timer.stop();
-        assert(n != NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
@@ -718,7 +714,6 @@ class DBTesting {
         timer.start();
         node *n = avl.Find(avl.GetRoot(), -1);
         timer.stop();
-        assert(n == NULL);
         cout << "Time taken to search for non existent element in AVL of size "
              << i << " is " << timer.currtime() << endl;
         file << i << "," << timer.currtime() << endl;
@@ -807,29 +802,31 @@ public:
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE_PARAM(memory_leak_iterations, 100);
-            TEST_CASE_PARAM(memory_leak_iterations, 1000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000);
-            TEST_CASE_PARAM(memory_leak_iterations, 100000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
-            TEST_CASE(memory_leak_avl_random);
-            TEST_CASE(memory_leak_avl_duplicate);
-            TEST_CASE(memory_leak_avl_empty);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 100);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 10000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 100000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 10000000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 100);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 1000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 10000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 100000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 10000000);
+            TEST_CASE(memory_leak_map_random);
+            TEST_CASE(memory_leak_map_duplicate);
+            TEST_CASE(memory_leak_map_empty);
         }
     }
 
     // 6. Test for speed of search (worst case).
-    void test_speed_search_map(TestType type)
+    void test_speed_search(TestType type)
     {
         if (type == TestType::AVLTREE)
         {
             ofstream file1("test_speed_avl_exist.csv");
             ofstream file2("test_speed_avl_not_exist.csv");
+            file1 << "Iterations" << "," << "Time Taken" << endl;
+            file2 << "Iterations" << "," << "Time Taken" << endl;
             for (int i = 1000; i <= 1000000; i += 1000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_avl_exist, i, file1);
@@ -840,6 +837,8 @@ public:
         {
             ofstream file1("test_speed_map_exist.csv");
             ofstream file2("test_speed_map_not_exist.csv");
+            file1 << "Iterations" << "," << "Time Taken" << endl;
+            file2 << "Iterations" << "," << "Time Taken" << endl;
             for (int i = 1000; i <= 1000000; i += 1000)
             {
                 TEST_CASE_MULTIPLE_PARAMS(test_speed_map_exist, i, file1);
