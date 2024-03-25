@@ -5,10 +5,9 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include "timer.h"
 
 using namespace std;
-
+#define INT_MAX 200
 #define TEST_CASE(fn)                                                          \
     cout << "================================================================" \
             "================"                                                 \
@@ -33,17 +32,6 @@ using namespace std;
          << endl;                                                              \
     cout << "    Running " << #fn << "...";                                    \
     fn(param1, file);                                                          \
-    cout << " Complete. " << endl;                                             \
-    cout << "================================================================" \
-            "================"                                                 \
-         << endl;
-
-#define TEST_CASE_PARAM(fn, param)                                             \
-    cout << "================================================================" \
-            "================"                                                 \
-         << endl;                                                              \
-    cout << "    Running " << #fn << "...";                                    \
-    fn(param);                                                                 \
     cout << " Complete. " << endl;                                             \
     cout << "================================================================" \
             "================"                                                 \
@@ -331,14 +319,16 @@ class DBTesting {
     }
 
     // MAX SIZE
-    void test_max_size_map()
+    template<typename T>
+    void test_max_size_map(T (*func)())
     {
         map<int, EmployeeInfo> m;
         int MAX = 0;
 
         try
         {
-            while (true)
+            T maxStorageCapacity = 4096; // 4 GB memory
+            while (func() < maxStorageCapacity)
             {
                 EmployeeInfo empl;
                 empl.age = 0;
@@ -363,13 +353,15 @@ class DBTesting {
         cout << "@test_max_size: Max size of map is: " << MAX << endl;
     }
 
-    void test_max_size_avl()
+    template <typename T>
+    void test_max_size_avl(T(*func)())
     {
         int MAX = 0;
         int stepSize = 1000;
-        bool flag = true;
+        int offset = 0;
+        T maxStorageCapacity = 4096; // 4 GB memory
 
-        while (flag)
+        while (func() < maxStorageCapacity)
         {
             try
             {
@@ -382,6 +374,7 @@ class DBTesting {
                     empl.emplNumber = 0;
                     empl.sin = rand();
                     avl.insert(empl);
+                    offset = i;
                 }
                 avl.makeEmpty(avl.GetRoot());
                 MAX += stepSize;
@@ -390,28 +383,25 @@ class DBTesting {
             {
                 std::cerr << e.what() << '\n';
                 cerr << "Maximum size reached!" << endl;
-                flag = false;
             }
             catch (const std::exception &e)
             {
                 std::cerr << e.what() << '\n';
-                flag = false;
             }
 
-            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize << endl;
         }
+        cout << "@test_max_size: Max size of AVL is: " << MAX - offset << endl;
     }
 
     // LOAD
-    void test_load_map()
+    void test_load_map(int numIterations)
     {
         map<int, EmployeeInfo> m;
-        int NUM = 1000000;
-        int findStep = 100;
-        int removeStep = 500;
+        int findStep = 10;
+        int removeStep = 50;
         try
-        {
-            for (int i = 0; i < NUM; i++)
+        {     
+            for (int i = 0; i < numIterations; i++)
             {
                 EmployeeInfo empl;
                 empl.age = 0;
@@ -434,18 +424,17 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): Map loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): Map loaded with " << numIterations << " elements" << endl;
     }
 
-    void test_load_avl()
+    void test_load_avl(int numIterations)
     {
         AVL avl;
-        int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
         try
         {
-            for (int i = 0; i < NUM; i++)
+            for (int i = 0; i < numIterations; i++)
             {
                 EmployeeInfo empl;
                 empl.age = 0;
@@ -468,7 +457,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): AVL loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): AVL loaded with " << numIterations << " elements" << endl;
     }
 
     // MEMORY LEAK
@@ -756,28 +745,29 @@ public:
     }
 
     // 3. Test for maximum size.
-    void test_max_size(TestType type)
+    template <typename T>
+    void test_max_size(TestType type, T (*func)())
     {
         if (type == TestType::AVLTREE)
         {
-            TEST_CASE(test_max_size_avl);
+            TEST_CASE_PARAM(test_max_size_avl, func);
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE(test_max_size_map);
+            TEST_CASE_PARAM(test_max_size_map, func);
         }
     }
 
     // 4. Test for load (have the tree repeatedly accessed).
-    void test_load(TestType type)
+    void test_load(TestType type, int numIterations)
     {
         if (type == TestType::AVLTREE)
         {
-            TEST_CASE(test_load_avl);
+            TEST_CASE_PARAM(test_load_avl, numIterations);
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE(test_load_map);
+            TEST_CASE_PARAM(test_load_map, numIterations);
         }
     }
 
