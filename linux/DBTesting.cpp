@@ -353,20 +353,19 @@ class DBTesting {
         cout << "@test_max_size: Max size of map is: " << MAX << endl;
     }
 
-    template <typename T>
-    void test_max_size_avl(T(*func)())
+
+    void test_max_size_avl(long(*func)())
     {
-        int MAX = 0;
         int stepSize = 1000;
         int offset = 0;
-        T maxStorageCapacity = 4096; // 4 GB memory
+        long maxStorageCapacity = 4096; // 4 GB memory
 
         while (func() < maxStorageCapacity)
         {
             try
             {
                 AVL avl;
-                for (int i = 0; i < MAX; i++)
+                for (int i = 0; i < offset + stepSize; i++)
                 {
                     EmployeeInfo empl;
                     empl.age = 0;
@@ -377,7 +376,7 @@ class DBTesting {
                     offset = i;
                 }
                 avl.makeEmpty(avl.GetRoot());
-                MAX += stepSize;
+                offset += stepSize;
             }
             catch (const std::bad_alloc &e)
             {
@@ -390,7 +389,7 @@ class DBTesting {
             }
 
         }
-        cout << "@test_max_size: Max size of AVL is: " << MAX - offset << endl;
+        cout << "@test_max_size: Max size of AVL is: " << offset << endl;
     }
 
     // LOAD
@@ -745,8 +744,7 @@ public:
     }
 
     // 3. Test for maximum size.
-    template <typename T>
-    void test_max_size(TestType type, T (*func)())
+    void test_max_size(TestType type, long(*func)())
     {
         if (type == TestType::AVLTREE)
         {
