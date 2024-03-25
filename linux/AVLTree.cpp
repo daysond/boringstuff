@@ -1,4 +1,9 @@
-// AVLTree.cpp: AVL Tree Implementation in C++   */
+// AVL.cpp - Implementation of AVL tree
+//
+// Created - March, 2024
+// Author - Miguel Watler
+// Modified - Yiyuan Dong
+
 #include "AVLTree.h"
 #include <algorithm>
 #include <fstream>

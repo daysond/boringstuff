@@ -1,3 +1,8 @@
+// Test_Memory_Leak.cpp - Main program for testing memory leak
+//
+// Created - March, 2024
+// Author - Yiyuan Dong
+
 #include "DBTesting.cpp"
 #include <fstream>
 #include <iostream>

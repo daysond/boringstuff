@@ -1,4 +1,8 @@
-// AVLTree.cpp: AVL Tree Implementation in C++   */
+// AVL.h - Header file for AVL Tree
+//
+// Created - March, 2024
+// Author - Yiyuan Dong
+
 
 #ifndef AVL_TREE_H
 #define AVL_TREE_H

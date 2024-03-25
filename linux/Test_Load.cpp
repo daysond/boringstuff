@@ -1,3 +1,8 @@
+// Test_Load.cpp - Main program for load testing
+//
+// Created - March, 2024
+// Author - Dennis Audi
+
 #include "DBTesting.cpp"
 #include <fstream>
 #include <iostream>

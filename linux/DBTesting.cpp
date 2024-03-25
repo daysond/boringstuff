@@ -1,3 +1,8 @@
+// DBTesting.cpp
+//
+// Created - March, 2024
+// Author - Dennis Audi, Yiyuan Dong, Kannav Sethi
+
 #include "AVLTree.h"
 #include "timer.h"
 #include <cassert>
@@ -53,11 +58,22 @@ class DBTesting {
     6. Test for speed of search (worst case).
     */
 
-// helper functions
+//================================================================================================
+//                                      Helper functions
+//================================================================================================
 
 // ==================== Visualization ====================
-// These functions vide generate a png file of the visualize tree.
 
+/*
+These functions vide generate a png file of the visualize tree.
+
+generateDotFile: Generates a dot file of the tree.
+
+generateDotFileRec: Recursively writes to the dot file.
+
+displayTree: Displays the tree in a txt file and generates a png file.
+
+*/
     void generateDotFile(const std::string &filename, node *root) {
         std::ofstream file(filename);
         if (!file.is_open()) {
@@ -67,8 +83,6 @@ class DBTesting {
 
         file << "digraph AVLTree {\n";
         if (root) {
-            // Explicitly handle the root to ensure it appears even if it has no
-            // children
             file << "    " << root->empl.sin << ";\n";
             generateDotFileRec(root, file);
         }
@@ -134,6 +148,10 @@ class DBTesting {
         }
         return avl;
     }
+
+//================================================================================================
+//                                           Test Cases
+//================================================================================================
 
 // =================== Insertion Test Cases ===================
 
@@ -770,6 +788,11 @@ class DBTesting {
     }
 
 public:
+
+//================================================================================================
+//                                           Tests
+//================================================================================================
+
     // 1. Test for correctness of insertion.
     void test_insertion() {
         TEST_CASE(test_empty_tree);
@@ -872,5 +895,4 @@ public:
         }
     }
 
-    
 };

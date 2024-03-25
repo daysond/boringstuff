@@ -1,4 +1,8 @@
-// #include "AVLTree.h" // Your AVL tree implementation
+// Test_Search_Speed.cpp - Main program for testing search speed
+//
+// Created - March, 2024
+// Author - Yiyuan Dong
+
 
 #include "DBTesting.cpp"
 #include <fstream>
