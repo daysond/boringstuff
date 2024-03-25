@@ -1,27 +1,28 @@
-#include <iostream>
-#include <fstream>
-#include <string>
 #include "DBTesting.cpp"
+#include <fstream>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-bool exists(std::string path){
+bool exists(std::string path) {
     ifstream file;
     return file.good();
 }
 
-void writeToCSV(std::string filename,  int iterations, double mapTime, double avlTime) {
+void writeToCSV(std::string filename, int iterations, double mapTime,
+                double avlTime) {
     bool fileExists = exists(filename);
 
-    ios_base::openmode mode = exists(filename)? ios::trunc : ios::app;
+    ios_base::openmode mode = exists(filename) ? ios::trunc : ios::app;
     std::ofstream csv(filename, mode);
 
-    if(csv.is_open() && !fileExists)
+    if (csv.is_open() && !fileExists)
         csv << "iterations, map_time_taken, avl_time_taken\n";
-    
-    if (csv.is_open()) 
-        csv << iterations << "," << mapTime << "," << avlTime << "\n"; 
-    else 
+
+    if (csv.is_open())
+        csv << iterations << "," << mapTime << "," << avlTime << "\n";
+    else
         cout << "Error opening file \n";
 
     csv.close();
@@ -29,9 +30,10 @@ void writeToCSV(std::string filename,  int iterations, double mapTime, double av
 
 ofstream outfile;
 
-int main(){
+int main() {
     DBTesting dbt;
     Timer t;
+    cout << "********** Testing Load for AVL Tree & Map **********" << endl;
     int size = 3;
     int iter[size] = {100, 500, 1000};
     int idx = 0;
@@ -39,23 +41,29 @@ int main(){
     double avl_t = 0;
     double map_t = 0;
 
-    while(idx < size){
+    while (idx < size) {
         t.reset();
         t.start();
         dbt.test_load(TestType::AVLTREE, iter[idx]);
         t.stop();
 
-        avl_t = t.starttime() - t.currtime(); 
+        avl_t = t.starttime() - t.currtime();
 
         t.reset();
         t.start();
         dbt.test_load(TestType::MAP, iter[idx]);
         t.stop();
 
-        map_t = t.starttime() - t.currtime(); 
+        map_t = t.starttime() - t.currtime();
 
         writeToCSV("loadPerformance.csv", iter[idx], map_t, avl_t);
+        idx++;
     }
+
+    std::cout << "Press enter to continue...";
+    std::cin.get();
+
+    std::cout << "All load tests done.\n";
 
     return 0;
 }

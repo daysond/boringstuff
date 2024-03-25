@@ -402,7 +402,30 @@ class DBTesting {
         }
     }
 
-    // MAX SIZE
+   void test_remove_duplicate() {
+        int sin[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+        int n = sizeof(sin) / sizeof(sin[0]);
+        int balance = 99;
+        AVL avl = get_tree(sin, n);
+
+        node *root = avl.GetRoot();
+        char file[50];
+        for (int i = 0; i < n; i++) {
+            avl.remove(sin[i]);
+            root = avl.GetRoot();
+            assert(avl.Find(root, sin[i]) == NULL);
+            balance = avl.getBalance(root);
+            assert(balance == 0 || balance == 1 || balance == -1);
+            if (root) {
+                assert(avl.findMax(root)->empl.sin == 1);
+                assert(avl.findMin(root)->empl.sin == 1);
+            }
+        }
+    }
+
+
+// =================== Maximum Size Test Cases ===================
+
     template<typename T>
     void test_max_size_map(T (*func)())
     {
@@ -470,7 +493,8 @@ class DBTesting {
         cout << "@test_max_size: Max size of AVL is: " << MAX - offset << endl;
     }
 
-    // LOAD
+// =================== Load Test Cases ===================
+
     void test_load_map(int numIterations)
     {
         map<int, EmployeeInfo> m;
@@ -501,7 +525,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): Map loaded with " << numIterations << " elements" << endl;
+        // cout << "@test_load(): Map loaded with " << numIterations << " elements" << endl;
     }
 
     void test_load_avl(int numIterations)
@@ -534,7 +558,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): AVL loaded with " << numIterations << " elements" << endl;
+        // cout << "@test_load(): AVL loaded with " << numIterations << " elements" << endl;
     }
 
 // =================== Memory Leak Test Cases ===================
@@ -791,11 +815,13 @@ public:
     {
         if (type == TestType::AVLTREE)
         {
-            TEST_CASE_PARAM(test_load_avl, numIterations);
+            test_load_avl(numIterations);
+            // TEST_CASE_PARAM(test_load_avl, numIterations);
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE_PARAM(test_load_map, numIterations);
+            test_load_map(numIterations);
+            // TEST_CASE_PARAM(test_load_map, numIterations);
         }
     }
 
