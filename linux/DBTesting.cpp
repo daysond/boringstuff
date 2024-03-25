@@ -750,11 +750,11 @@ public:
     {
         if (type == TestType::AVLTREE)
         {
-            test_max_size_avl(&func);
+            test_max_size_avl(func);
         }
         else if (type == TestType::MAP)
         {
-            test_max_size_map(&func);
+            test_max_size_map(func);
         }
     }
 

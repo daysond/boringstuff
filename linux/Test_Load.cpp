@@ -33,12 +33,11 @@ int main(){
     
     int iter =  10000;
     int size = 1000000;
-    int idx = 0;
 
     double avl_t = 0;
     double map_t = 0;
 
-    while(idx < size){
+    while(iter < size){
         t.reset();
         t.start();
         dbt.test_load(dbt.TestType::AVLTREE, iter);
@@ -54,7 +53,7 @@ int main(){
         map_t = t.starttime() - t.currtime(); 
 
         writeToCSV("loadPerformance.csv", iter, map_t, avl_t);
-        idx++;
+
         iter += 10000;
     }
 

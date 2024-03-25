@@ -14,6 +14,7 @@ using namespace std;
 #include <sys/resource.h>
 #include <unistd.h>
 
+long memUsed();
 long memUsed() {
     struct rusage usage;
     getrusage(RUSAGE_SELF, &usage);
@@ -40,7 +41,7 @@ ofstream outfile;
 int main(){
     DBTesting dbt;
 
-    dbt.test_max_size(dbt.TestType::AVLTREE, &memUsed);
+    dbt.test_max_size(DBTesting::TestType::AVLTREE, &memUsed);
    
 
     return 0;
