@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include "timer.h"
 
 using namespace std;
 
@@ -479,7 +478,7 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             avl.insert(empl);
@@ -494,7 +493,7 @@ class DBTesting {
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
         empl.emplNumber = INT_MAX;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             avl.insert(empl);
@@ -555,12 +554,12 @@ class DBTesting {
         empl.age = 0;
         empl.salary = 0;
         empl.emplNumber = 0;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map.erase(i);
@@ -574,12 +573,12 @@ class DBTesting {
         empl.age = INT_MAX;
         empl.salary = INT_MAX;
         empl.emplNumber = INT_MAX;
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map[i] = &empl;
         }
-        for (int j = 0; j < i; i++)
+        for (int j = 0; j < i; j++)
         {
             empl.sin = i;
             map.erase(i);
@@ -807,19 +806,19 @@ public:
         }
         else if (type == TestType::MAP)
         {
-            TEST_CASE_PARAM(memory_leak_iterations, 100);
-            TEST_CASE_PARAM(memory_leak_iterations, 1000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000);
-            TEST_CASE_PARAM(memory_leak_iterations, 100000);
-            TEST_CASE_PARAM(memory_leak_iterations, 10000000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 1000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 100000);
-            TEST_CASE_PARAM(memory_leak_avl_bulk, 10000000);
-            TEST_CASE(memory_leak_avl_random);
-            TEST_CASE(memory_leak_avl_duplicate);
-            TEST_CASE(memory_leak_avl_empty);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 100);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 1000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 10000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 100000);
+            TEST_CASE_PARAM(memory_leak_map_iterations, 10000000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 100);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 1000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 10000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 100000);
+            TEST_CASE_PARAM(memory_leak_map_bulk, 10000000);
+            TEST_CASE(memory_leak_map_random);
+            TEST_CASE(memory_leak_map_duplicate);
+            TEST_CASE(memory_leak_map_empty);
         }
     }
 

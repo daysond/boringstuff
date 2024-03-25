@@ -3,8 +3,8 @@ CFLAGS=-I
 CFLAGS+=-Wall
 FILES=AVLTree.cpp
 FILES+=timer.cpp
-# FILES+=main.cpp
-FILES+=Test.cpp
+FILES+=main.cpp
+# FILES+=Test.cpp
 
 avlTree: $(FILES)
 	$(CC) $(CFLAGS) $^ -o $@
