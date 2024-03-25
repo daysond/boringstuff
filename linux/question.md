@@ -4,7 +4,25 @@
 
 ### On Test Case - Duplicate Insertion: 
 
-The tree was only populated with one node.
+The tree was only populated with one node.  (See generated graphs)
+
+#### Note: 
+
+[*graphviz*](https://graphviz.org) is needed to generate graph
+
+For linux, run the following command:
+``` linux
+sudo apt-get update
+sudo apt-get install graphviz
+```
+Windows
+```
+choco install graphviz
+```
+MacOS
+```
+brew install graphviz
+```
 
 ## Deletion:
 
@@ -36,6 +54,21 @@ Inserts number 1 - 15 in reversed order then deletes them in the same reserved o
 - AVL: no memory leak found
 
 - MAP: no memory leak found
+
+```
+All memory leak tests done.
+In case memory leak, test AVL and map separately.
+==343089== 
+==343089== HEAP SUMMARY:
+==343089==     in use at exit: 0 bytes in 0 blocks
+==343089==   total heap usage: 20,110 allocs, 20,110 frees, 959,856 bytes allocated
+==343089== 
+==343089== All heap blocks were freed -- no leaks are possible
+==343089== 
+==343089== For lists of detected and suppressed errors, rerun with: -s
+==343089== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+Test_Memory_Leak completed.
+```
 
 ### Windows:
 
