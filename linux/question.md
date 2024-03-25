@@ -1,8 +1,8 @@
-## Report:
+## Test Report:
 
 ### Insertion:
 
-#### On TC - Duplicate Insertion: 
+#### On Test Case - Duplicate Insertion: 
 
 The tree was only populated with one node.
 
