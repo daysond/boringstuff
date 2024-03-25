@@ -43,14 +43,14 @@ int main(){
         dbt.test_load(dbt.TestType::AVLTREE, iter);
         t.stop();
 
-        avl_t = t.starttime() - t.currtime(); 
+        avl_t = t.currtime(); 
 
         t.reset();
         t.start();
         dbt.test_load(dbt.TestType::MAP, iter);
         t.stop();
 
-        map_t = t.starttime() - t.currtime(); 
+        map_t = t.currtime(); 
 
         writeToCSV("loadPerformance.csv", iter, map_t, avl_t);
 

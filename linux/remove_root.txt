@@ -1,0 +1,8 @@
+ height:0 sin:5 employee number:0 salary:0 age:0
+ height:1 sin:10 employee number:0 salary:0 age:0
+ height:0 sin:15 employee number:0 salary:0 age:0
+ height:2 sin:25 employee number:0 salary:0 age:0
+ height:0 sin:27 employee number:0 salary:0 age:0
+ height:1 sin:30 employee number:0 salary:0 age:0
+ height:0 sin:35 employee number:0 salary:0 age:0
+
