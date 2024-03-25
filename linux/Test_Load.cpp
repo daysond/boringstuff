@@ -30,8 +30,9 @@ ofstream outfile;
 int main(){
     DBTesting dbt;
     Timer t;
-    int size = 3;
-    int iter[size] = {100, 500, 1000};
+    
+    int iter =  10000;
+    int size = 1000000;
     int idx = 0;
 
     double avl_t = 0;
@@ -40,19 +41,21 @@ int main(){
     while(idx < size){
         t.reset();
         t.start();
-        dbt.test_load(dbt.TestType::AVLTREE, iter[idx]);
+        dbt.test_load(dbt.TestType::AVLTREE, iter);
         t.stop();
 
         avl_t = t.starttime() - t.currtime(); 
 
         t.reset();
         t.start();
-        dbt.test_load(dbt.TestType::MAP, iter[idx]);
+        dbt.test_load(dbt.TestType::MAP, iter);
         t.stop();
 
         map_t = t.starttime() - t.currtime(); 
 
-        writeToCSV("loadPerformance.csv", iter[idx], map_t, avl_t);
+        writeToCSV("loadPerformance.csv", iter, map_t, avl_t);
+        idx++;
+        iter += 10000;
     }
 
     return 0;
