@@ -33,6 +33,7 @@ class Timer {
 #if PLATFORM == WINDOWS
 	clock_t starttime_;
 	clock_t stoptime_;
+	
 #else
 	struct timespec starttime_;
 	struct timespec stoptime_;

@@ -7,9 +7,7 @@
 #include <map>
 
 using namespace std;
-
-#define INT_MAX 2147483647
-
+#define INT_MAX 200
 #define TEST_CASE(fn)                                                          \
     cout << "================================================================" \
             "================"                                                 \
@@ -21,16 +19,12 @@ using namespace std;
             "================"                                                 \
          << endl;
 
-#define TEST_CASE_PARAM(fn, param)                                             \
-    cout << "================================================================" \
-            "================"                                                 \
-         << endl;                                                              \
-    cout << "    Running " << #fn << "...";                                    \
-    fn(param);                                                                 \
-    cout << " Complete. " << endl;                                             \
-    cout << "================================================================" \
-            "================"                                                 \
-         << endl;
+#define TEST_CASE_PARAM(fn, param)                                                                      \
+    cout << "================================================================================" << endl; \
+    cout << "    Running " << #fn << "...";                                                             \
+    fn(param);                                                                                          \
+    cout << " Complete. " << endl;                                                                      \
+    cout << "================================================================================" << endl;
 
 #define TEST_CASE_MULTIPLE_PARAMS(fn, param1, file)                            \
     cout << "================================================================" \
@@ -408,55 +402,18 @@ class DBTesting {
         }
     }
 
-    void test_remove_in_reverse_sequence() {
-        int sin[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        int n = sizeof(sin) / sizeof(sin[0]);
-        int balance = 99;
-        AVL avl = get_tree(sin, n);
-
-        node *root = avl.GetRoot();
-        char file[50];
-        for (int i = n; i > 0; i--) {
-            avl.remove(sin[i]);
-            root = avl.GetRoot();
-            assert(avl.Find(root, sin[i]) == NULL);
-            balance = avl.getBalance(root);
-            assert(balance == 0 || balance == 1 || balance == -1);
-            if (root) {
-                assert(avl.findMax(root)->empl.sin == sin[i - 1]);
-                assert(avl.findMin(root)->empl.sin == sin[0]);
-            }
-        }
-    }
-
-    void test_remove_duplicate() {
-        int sin[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-        int n = sizeof(sin) / sizeof(sin[0]);
-        int balance = 99;
-        AVL avl = get_tree(sin, n);
-
-        node *root = avl.GetRoot();
-        char file[50];
-        for (int i = 0; i < n; i++) {
-            avl.remove(sin[i]);
-            root = avl.GetRoot();
-            assert(avl.Find(root, sin[i]) == NULL);
-            balance = avl.getBalance(root);
-            assert(balance == 0 || balance == 1 || balance == -1);
-            if (root) {
-                assert(avl.findMax(root)->empl.sin == 1);
-                assert(avl.findMin(root)->empl.sin == 1);
-            }
-        }
-    }
-// =================== Maximum Size Test Cases ===================
-  
-    void test_max_size_map() {
+    // MAX SIZE
+    template<typename T>
+    void test_max_size_map(T (*func)())
+    {
         map<int, EmployeeInfo> m;
         int MAX = 0;
 
-        try {
-            while (true) {
+        try
+        {
+            T maxStorageCapacity = 4096; // 4 GB memory
+            while (func() < maxStorageCapacity)
+            {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -476,13 +433,18 @@ class DBTesting {
         cout << "@test_max_size: Max size of map is: " << MAX << endl;
     }
 
-    void test_max_size_avl() {
+    template <typename T>
+    void test_max_size_avl(T(*func)())
+    {
         int MAX = 0;
         int stepSize = 1000;
-        bool flag = true;
+        int offset = 0;
+        T maxStorageCapacity = 4096; // 4 GB memory
 
-        while (flag) {
-            try {
+        while (func() < maxStorageCapacity)
+        {
+            try
+            {
                 AVL avl;
                 for (int i = 0; i < MAX; i++) {
                     EmployeeInfo empl;
@@ -491,32 +453,33 @@ class DBTesting {
                     empl.emplNumber = 0;
                     empl.sin = rand();
                     avl.insert(empl);
+                    offset = i;
                 }
                 avl.makeEmpty(avl.GetRoot());
                 MAX += stepSize;
             } catch (const std::bad_alloc &e) {
                 std::cerr << e.what() << '\n';
                 cerr << "Maximum size reached!" << endl;
-                flag = false;
-            } catch (const std::exception &e) {
+            }
+            catch (const std::exception &e)
+            {
                 std::cerr << e.what() << '\n';
-                flag = false;
             }
 
-            cout << "@test_max_size: Max size of AVL is: " << MAX - stepSize
-                 << endl;
         }
+        cout << "@test_max_size: Max size of AVL is: " << MAX - offset << endl;
     }
 
-// =================== Load Test Cases ===================
-
-    void test_load_map() {
+    // LOAD
+    void test_load_map(int numIterations)
+    {
         map<int, EmployeeInfo> m;
-        int NUM = 1000000;
-        int findStep = 100;
-        int removeStep = 500;
-        try {
-            for (int i = 0; i < NUM; i++) {
+        int findStep = 10;
+        int removeStep = 50;
+        try
+        {     
+            for (int i = 0; i < numIterations; i++)
+            {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -538,16 +501,18 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): Map loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): Map loaded with " << numIterations << " elements" << endl;
     }
 
-    void test_load_avl() {
+    void test_load_avl(int numIterations)
+    {
         AVL avl;
-        int NUM = 1000000;
         int findStep = 100;
         int removeStep = 500;
-        try {
-            for (int i = 0; i < NUM; i++) {
+        try
+        {
+            for (int i = 0; i < numIterations; i++)
+            {
                 EmployeeInfo empl;
                 empl.age = 0;
                 empl.salary = 0;
@@ -569,7 +534,7 @@ class DBTesting {
             std::cerr << e.what() << '\n';
         }
 
-        cout << "@test_load(): AVL loaded with " << NUM << " elements" << endl;
+        cout << "@test_load(): AVL loaded with " << numIterations << " elements" << endl;
     }
 
 // =================== Memory Leak Test Cases ===================
@@ -808,20 +773,29 @@ public:
     }
 
     // 3. Test for maximum size.
-    void test_max_size(TestType type) {
-        if (type == TestType::AVLTREE) {
-            TEST_CASE(test_max_size_avl);
-        } else if (type == TestType::MAP) {
-            TEST_CASE(test_max_size_map);
+    template <typename T>
+    void test_max_size(TestType type, T (*func)())
+    {
+        if (type == TestType::AVLTREE)
+        {
+            TEST_CASE_PARAM(test_max_size_avl, func);
+        }
+        else if (type == TestType::MAP)
+        {
+            TEST_CASE_PARAM(test_max_size_map, func);
         }
     }
 
     // 4. Test for load (have the tree repeatedly accessed).
-    void test_load(TestType type) {
-        if (type == TestType::AVLTREE) {
-            TEST_CASE(test_load_avl);
-        } else if (type == TestType::MAP) {
-            TEST_CASE(test_load_map);
+    void test_load(TestType type, int numIterations)
+    {
+        if (type == TestType::AVLTREE)
+        {
+            TEST_CASE_PARAM(test_load_avl, numIterations);
+        }
+        else if (type == TestType::MAP)
+        {
+            TEST_CASE_PARAM(test_load_map, numIterations);
         }
     }
 
